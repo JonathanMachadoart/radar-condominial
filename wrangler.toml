@@ -1,0 +1,11 @@
+name = "radarcondominial"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[kv_namespaces]]
+binding = "IMPORTS_KV"
+id = "39ab92abdc9b438e8d2f1924b21aefe7"

@@ -1,0 +1,1997 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"></head><body>
+<title>Radar Condominial</title>
+<meta name="description" content="Mapa de conexões entre os conteúdos e os temas mais recorrentes de uCondo, TownSq e Condomob, com a Winker incluída como referência de concorrência.">
+<style>
+  .viz-root {
+    color-scheme: light;
+    --page:           #f5f4fb;
+    --surface-1:      #ffffff;
+    --text-primary:   #181824;
+    --text-secondary: #6e6c85;
+    --text-muted:     #9794ab;
+    --gridline:       #ece9f8;
+    --border:         rgba(43,27,107,0.10);
+    --series-ucondo:  #7b68ee;
+    --series-townsq:  #fc6d2d;
+    --series-condomob:#12c2a9;
+    --series-winker:  #e5484d;
+    --hub-fill:       #efebff;
+    --hub-stroke:     #7b68ee;
+    --hub-text:       #2b1b6b;
+    --chip-bg:        #ffffff;
+    --ink-rgb:         24,24,36;
+    --accent-active:  #6647f0;
+    --accent-soft:    rgba(123,104,238,0.10);
+    --shadow-card:    0 1px 2px rgba(43,27,107,.05), 0 10px 26px rgba(43,27,107,.08);
+    --hero-grad:      linear-gradient(135deg,#1c1140 0%,#3b1f8f 35%,#6647f0 68%,#8b6bf0 100%);
+    --warn-bg:        rgba(252,109,45,.10);
+    --warn-text:      #c2550f;
+    --warn-border:    rgba(252,109,45,.28);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      color-scheme: dark;
+      --page:           #15131f;
+      --surface-1:      #1e1b2c;
+      --text-primary:   #f3f1fb;
+      --text-secondary: #b6b2cc;
+      --text-muted:     #8884a3;
+      --gridline:       #2c2840;
+      --border:         rgba(243,241,251,0.12);
+      --series-ucondo:  #9f8fef;
+      --series-townsq:  #ff9159;
+      --series-condomob:#3fe0c6;
+      --series-winker:  #ff6b70;
+      --hub-fill:       #2a2440;
+      --hub-stroke:     #8b6bf0;
+      --hub-text:       #f3f1fb;
+      --chip-bg:        #241f36;
+      --ink-rgb:         243,241,251;
+      --accent-active:  #9f8fef;
+      --accent-soft:    rgba(159,143,239,0.14);
+      --shadow-card:    0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.4);
+      --hero-grad:      linear-gradient(135deg,#0f0a26 0%,#271457 35%,#4a2cc4 68%,#6647f0 100%);
+      --warn-bg:        rgba(255,145,89,.16);
+      --warn-text:      #ff9159;
+      --warn-border:    rgba(255,145,89,.35);
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    color-scheme: dark;
+    --page:           #15131f;
+    --surface-1:      #1e1b2c;
+    --text-primary:   #f3f1fb;
+    --text-secondary: #b6b2cc;
+    --text-muted:     #8884a3;
+    --gridline:       #2c2840;
+    --border:         rgba(243,241,251,0.12);
+    --series-ucondo:  #9f8fef;
+    --series-townsq:  #ff9159;
+    --series-condomob:#3fe0c6;
+    --series-winker:  #ff6b70;
+    --hub-fill:       #2a2440;
+    --hub-stroke:     #8b6bf0;
+    --hub-text:       #f3f1fb;
+    --chip-bg:        #241f36;
+    --ink-rgb:         243,241,251;
+    --accent-active:  #9f8fef;
+    --accent-soft:    rgba(159,143,239,0.14);
+    --shadow-card:    0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.4);
+    --hero-grad:      linear-gradient(135deg,#0f0a26 0%,#271457 35%,#4a2cc4 68%,#6647f0 100%);
+    --warn-bg:        rgba(255,145,89,.16);
+    --warn-text:      #ff9159;
+    --warn-border:    rgba(255,145,89,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: var(--page); }
+  .viz-root {
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 0 0 32px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--hero-grad);
+    border-radius: 0 0 28px 28px;
+    padding: 26px 0 32px;
+    margin-bottom: 18px;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -130px; right: -70px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: -150px; left: -70px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,104,238,.45) 0%, rgba(123,104,238,0) 70%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #e3defe;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.22);
+    padding: 4px 11px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  header { margin-bottom: 0; }
+  h1 {
+    font-size: 25px;
+    font-weight: 800;
+    margin: 0 0 7px;
+    letter-spacing: -0.3px;
+    color: #ffffff;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: rgba(255,255,255,.80);
+    margin: 0;
+    max-width: 760px;
+    line-height: 1.55;
+  }
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 8px;
+  }
+  .toolbar + .toolbar { margin-top: 0; margin-bottom: 12px; }
+  .toolbar .label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-right: 4px;
+    flex: none;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--chip-bg);
+    border: 1.5px solid var(--border);
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.15s ease, transform 0.1s ease, border-color 0.15s ease;
+    box-shadow: 0 1px 2px rgba(43,27,107,.04);
+  }
+  .chip:hover { transform: translateY(-1px); border-color: var(--accent-active); }
+  .chip.off { opacity: 0.4; }
+  .chip.toggle-on { background: var(--accent-active); color: #ffffff; border-color: transparent; box-shadow: 0 4px 12px rgba(102,71,240,.35); }
+  .chip .dot {
+    width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex: none;
+  }
+  .chip-reset {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-active);
+    background: var(--accent-soft);
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+  }
+  .chip-reset:hover { background: rgba(123,104,238,.18); }
+  .search-input {
+    font-size: 12.5px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--border);
+    background: var(--chip-bg);
+    color: var(--text-primary);
+    outline: none;
+    width: 190px;
+    font-family: inherit;
+  }
+  .search-input:focus { border-color: var(--accent-active); }
+  .search-input::placeholder { color: var(--text-muted); }
+  .shape-legend {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+  }
+  .shape-legend svg { vertical-align: -2px; }
+  @media (max-width: 760px) {
+    .shape-legend { margin-left: 0; flex-wrap: wrap; }
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) 260px;
+    gap: 16px;
+    align-items: start;
+  }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  .chart-card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    position: relative;
+  }
+  #graph-svg { display: block; width: 100%; height: 640px; touch-action: none; }
+  .node-content { cursor: pointer; }
+  .node-tema { cursor: pointer; }
+  .link {
+    stroke: var(--gridline);
+    stroke-opacity: 0.7;
+  }
+  .link-hit { stroke: transparent; cursor: default; }
+  .node-label {
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--hub-text);
+    pointer-events: none;
+    paint-order: stroke;
+    stroke: var(--surface-1);
+    stroke-width: 3px;
+  }
+  .dim { opacity: 0.10; }
+  .recent-ring {
+    fill: none;
+    stroke: var(--accent-active);
+    stroke-width: 1.6px;
+    pointer-events: none;
+  }
+
+  .tooltip {
+    position: absolute;
+    max-width: 260px;
+    background: var(--chip-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    box-shadow: 0 14px 34px rgba(43,27,107,.22);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+    z-index: 5;
+  }
+  .tooltip .t-title { font-weight: 700; margin-bottom: 4px; }
+  .tooltip .t-meta { color: var(--text-secondary); font-size: 11.5px; }
+  .tooltip .t-link { color: var(--accent-active); font-size: 11.5px; display: block; margin-top: 6px; font-weight: 600; }
+  .tooltip .t-recent { display: inline-block; margin-top: 5px; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-active); }
+
+  .side {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    padding: 16px 18px;
+  }
+  .side h2 {
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--accent-active);
+    margin: 0 0 10px;
+  }
+  .side h2.second { margin-top: 18px; }
+  .rank-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--gridline);
+    font-size: 12.5px;
+  }
+  .rank-row:last-child { border-bottom: none; }
+  .rank-num {
+    font-size: 11px;
+    color: var(--text-muted);
+    width: 16px;
+    flex: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .rank-name { flex: 1; color: var(--text-primary); font-weight: 600; }
+  .rank-count {
+    font-size: 11px;
+    color: var(--accent-active);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 1px 8px;
+  }
+
+  .cadence-row { margin-bottom: 10px; }
+  .cadence-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .cadence-head .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .cadence-head .n { margin-left: auto; color: var(--text-muted); font-weight: 500; font-size: 11px; }
+
+  .legend-note {
+    margin-top: 14px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  .heatmap-card {
+    margin-top: 16px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
+    padding: 16px 18px 18px;
+  }
+  .heatmap-card h2 {
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--accent-active);
+    margin: 0 0 4px;
+  }
+  .heatmap-card .hm-sub { font-size: 12px; color: var(--text-secondary); margin: 0 0 12px; }
+  .hm-scroll { overflow-x: auto; }
+  table.heatmap { border-collapse: collapse; font-size: 11.5px; min-width: 760px; }
+  table.heatmap th, table.heatmap td {
+    padding: 6px 8px;
+    text-align: center;
+    border: 1px solid var(--border);
+    font-variant-numeric: tabular-nums;
+  }
+  table.heatmap th { color: var(--text-secondary); font-weight: 700; background: var(--accent-soft); }
+  table.heatmap th.row-h {
+    text-align: left;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+    position: sticky;
+    left: 0;
+    background: var(--surface-1);
+  }
+  table.heatmap td.cell { color: var(--text-primary); font-weight: 600; min-width: 56px; }
+
+  details.table-view { margin-top: 16px; }
+  details.table-view summary {
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent-active);
+    padding: 4px 0;
+  }
+  .tv-scroll { max-height: 320px; overflow: auto; margin-top: 8px; border: 1px solid var(--border); border-radius: 14px; }
+  table.tv {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  table.tv th, table.tv td {
+    text-align: left;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--gridline);
+    white-space: nowrap;
+  }
+  table.tv th:nth-child(2), table.tv td:nth-child(2) { white-space: normal; }
+  table.tv th { color: var(--text-muted); font-weight: 700; position: sticky; top: 0; background: var(--surface-1); }
+  table.tv td { color: var(--text-secondary); }
+  table.tv td:nth-child(2) { color: var(--text-primary); font-weight: 500; }
+
+  footer.credits {
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+  }
+
+  .gap-groups { display: flex; flex-direction: column; gap: 10px; }
+  .gap-brand-row { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+  .gap-brand-name { flex: none; width: 84px; font-size: 12px; font-weight: 700; color: var(--text-primary); padding-top: 4px; }
+  .gap-tags { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+  .gap-tag {
+    font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+    background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border);
+  }
+
+  .cadence-last { font-size: 10.5px; color: var(--text-muted); margin: 2px 0 6px; }
+
+  .trend-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 11.5px; color: var(--text-secondary); margin-bottom: 8px; }
+  .trend-legend .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+  .word-tags { display: flex; flex-wrap: wrap; }
+  .word-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 600; padding: 4px 11px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent-active); margin: 0 6px 6px 0;
+  }
+  .word-tag .n { color: var(--text-muted); font-weight: 500; }
+
+  .import-btn {
+    appearance: none; border: none; cursor: pointer; font: inherit; font-weight: 700;
+    font-size: 12.5px; color: #fff; background: var(--accent-active);
+    border-radius: 999px; padding: 7px 16px 7px 13px; display: inline-flex;
+    align-items: center; gap: 6px; margin-left: auto;
+  }
+  .import-btn:hover { filter: brightness(1.08); }
+  .import-btn svg { flex: none; }
+
+  .import-backdrop {
+    position: fixed; inset: 0; background: rgba(20,16,40,.52); z-index: 60;
+    display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .import-modal {
+    background: var(--surface-1); border-radius: 20px; box-shadow: var(--shadow-card);
+    width: min(880px, 100%); max-height: min(86vh, 900px); display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .import-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px; border-bottom: 1px solid var(--border); flex: none;
+  }
+  .import-head h2 { margin: 0; font-size: 18px; font-weight: 800; color: var(--text-primary); }
+  .import-close {
+    appearance: none; border: none; background: var(--accent-soft); color: var(--accent-active);
+    width: 30px; height: 30px; border-radius: 50%; font-size: 17px; cursor: pointer; line-height: 1;
+  }
+  .import-body { padding: 20px 24px 24px; overflow-y: auto; flex: 1 1 auto; }
+  .import-sub { color: var(--text-secondary); font-size: 13px; margin: 0 0 16px; line-height: 1.5; }
+
+  .import-drop {
+    border: 2px dashed var(--border); border-radius: 16px; padding: 36px 20px;
+    text-align: center; color: var(--text-secondary); font-size: 13.5px; cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .import-drop:hover, .import-drop.drag-over { border-color: var(--accent-active); background: var(--accent-soft); }
+  .import-drop strong { color: var(--accent-active); }
+  .import-drop input[type=file] { display: none; }
+  .import-status { margin-top: 14px; font-size: 13px; color: var(--text-secondary); }
+  .import-error { margin-top: 14px; font-size: 13px; color: var(--warn-text); background: var(--warn-bg);
+    border: 1px solid var(--warn-border); border-radius: 10px; padding: 10px 14px; }
+
+  .import-row {
+    border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+  }
+  .import-row.import-dup { opacity: .55; }
+  .import-row-top { display: flex; align-items: flex-start; gap: 10px; }
+  .import-row-top input[type=checkbox] { margin-top: 4px; flex: none; }
+  .import-row-title { flex: 1; min-width: 0; }
+  .import-title-input {
+    width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px;
+    font: inherit; font-weight: 700; font-size: 13.5px; color: var(--text-primary);
+    background: var(--surface-1); box-sizing: border-box;
+  }
+  .import-badge { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--warn-text); background: var(--warn-bg); border: 1px solid var(--warn-border);
+    border-radius: 999px; padding: 2px 8px; margin-left: 8px; }
+  .import-fields { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0 0 28px; }
+  .import-fields label { display: block; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .03em; color: var(--text-muted); margin-bottom: 3px; }
+  .import-fields input, .import-fields select {
+    width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 6px 8px;
+    font: inherit; font-size: 12.5px; color: var(--text-primary); background: var(--surface-1);
+    box-sizing: border-box;
+  }
+  .import-temas { margin: 10px 0 0 28px; }
+  .import-temas label.import-temas-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .03em; color: var(--text-muted); display: block; margin-bottom: 5px; }
+  .import-tema-grid { display: flex; flex-wrap: wrap; gap: 5px 10px; }
+  .import-tema-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 12px;
+    color: var(--text-secondary); cursor: pointer; }
+  .import-tema-chip input { margin: 0; }
+  .import-tema-chip.on { color: var(--accent-active); font-weight: 700; }
+  .import-new-tema { border: none; border-bottom: 1px dashed var(--border); background: transparent;
+    font: inherit; font-size: 12px; color: var(--text-secondary); padding: 2px 2px; width: 120px; }
+
+  .import-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 24px; border-top: 1px solid var(--border); flex: none; }
+  .import-footer-note { font-size: 12px; color: var(--text-muted); }
+  .import-login-msg { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .import-login-form { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .import-login-input {
+    font: inherit; font-size: 13px; padding: 7px 10px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg-elevated, #fff); color: var(--text-primary); min-width: 120px;
+  }
+  .import-login-submit {
+    appearance: none; border: none; cursor: pointer; font: inherit; font-weight: 700; font-size: 13px;
+    color: #fff; background: var(--accent-active); border-radius: 999px; padding: 7px 16px;
+  }
+  .import-login-submit:disabled { opacity: .55; cursor: default; }
+  .import-confirm-btn {
+    appearance: none; border: none; cursor: pointer; font: inherit; font-weight: 700; font-size: 13px;
+    color: #fff; background: var(--accent-active); border-radius: 999px; padding: 9px 20px;
+  }
+  .import-confirm-btn:disabled { opacity: .45; cursor: default; }
+  .import-cancel-btn {
+    appearance: none; border: 1px solid var(--border); cursor: pointer; font: inherit; font-weight: 600;
+    font-size: 13px; color: var(--text-secondary); background: transparent; border-radius: 999px; padding: 9px 18px;
+  }
+</style>
+
+<div class="viz-root">
+  <div class="hero">
+    <div class="hero-inner">
+      <header>
+        <span class="eyebrow">Análise de conteúdo</span>
+        <h1>Radar Condominial — mapa de conteúdos e temas</h1>
+        <p class="subtitle">120 vídeos, Shorts, Reels, posts e podcasts de uCondo, TownSq e Condomob — mais a Winker, incluída como referência de concorrência — conectados aos 14 temas que eles abordam. Alterne a visão, filtre por marca ou formato, busque por título ou isole publicações recentes. Passe o mouse num nó para detalhes; clique num conteúdo para abrir o link original.</p>
+      </header>
+    </div>
+  </div>
+  <div class="wrap">
+
+    <div class="toolbar" id="toolbar-view">
+      <span class="label">Visão</span>
+      <span class="chip toggle-on" data-view="content">Conteúdo → Tema</span>
+      <span class="chip" data-view="temas">Temas relacionados entre si</span>
+      <span class="chip" id="recent-toggle">Só últimos 14 dias</span>
+      <input class="search-input" id="search-input" type="text" placeholder="Buscar por título…">
+      <span class="shape-legend" id="shape-legend"></span>
+      <button class="import-btn" id="import-open-btn" type="button">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>
+        Importar conteúdo
+      </button>
+    </div>
+
+    <div class="toolbar" id="toolbar">
+      <span class="label">Marca</span>
+      <!-- brand chips injected by JS -->
+      <button class="chip-reset" id="reset-btn">Mostrar tudo</button>
+    </div>
+
+    <div class="toolbar" id="toolbar-format">
+      <span class="label">Formato</span>
+      <!-- format chips injected by JS -->
+    </div>
+
+    <div class="layout">
+      <div class="chart-card">
+        <svg id="graph-svg"></svg>
+        <div class="tooltip" id="tooltip"></div>
+      </div>
+
+      <div class="side">
+        <h2 id="rank-title">Temas mais conectados</h2>
+        <div id="rank-list"></div>
+        <h2 class="second">Cadência (últimas 10 semanas)</h2>
+        <div id="cadence-list"></div>
+        <div class="legend-note" id="legend-note">
+          Tamanho do nó de tema = quantidade de conteúdos que o citam. "Financeiro" e "Automação e Tecnologia" concentram quase 70% de todo o catálogo do Condomob.
+        </div>
+      </div>
+    </div>
+
+    <div class="heatmap-card">
+      <h2>Cobertura por marca × tema</h2>
+      <p class="hm-sub">Quantidade de conteúdos de cada marca em cada tema — mostra rapidamente onde cada uma concentra esforço e onde há espaço em branco.</p>
+      <div class="hm-scroll">
+        <table class="heatmap" id="heatmap-table"></table>
+      </div>
+    </div>
+
+    <div class="heatmap-card">
+      <h2>Oportunidades por marca</h2>
+      <p class="hm-sub">Temas mais populares do catálogo (por volume total de conteúdo) que cada marca ainda não cobriu nenhuma vez.</p>
+      <div class="gap-groups" id="gap-groups"></div>
+    </div>
+
+    <div class="heatmap-card">
+      <h2>Ritmo de publicação por mês</h2>
+      <p class="hm-sub">Conteúdos publicados por mês, por marca, nos últimos meses com atividade registrada.</p>
+      <div class="trend-legend" id="trend-legend"></div>
+      <div class="hm-scroll"><svg id="trend-svg"></svg></div>
+    </div>
+
+    <div class="heatmap-card">
+      <h2>Palavras mais usadas nos títulos</h2>
+      <p class="hm-sub">As 20 palavras que mais aparecem nos 120 títulos do catálogo, sem contar palavras comuns.</p>
+      <div class="word-tags" id="word-tags"></div>
+    </div>
+
+    <details class="table-view">
+      <summary>Ver como tabela (todos os 120 conteúdos)</summary>
+      <div class="tv-scroll">
+        <table class="tv">
+          <thead><tr><th>Marca</th><th>Título</th><th>Data</th><th>Formato</th><th>Temas</th></tr></thead>
+          <tbody id="tv-body"></tbody>
+        </table>
+      </div>
+    </details>
+
+    <footer class="credits">Fonte: planilha de acompanhamento de conteúdo (uCondo, TownSq, Condomob) + coleta de concorrência (Winker) · gerado a partir de 120 itens e 169 conexões de tema</footer>
+  </div>
+
+  <div class="import-backdrop" id="import-backdrop" hidden>
+    <div class="import-modal" role="dialog" aria-modal="true" aria-label="Importar conteúdo">
+      <div class="import-head">
+        <h2>Importar conteúdo</h2>
+        <button class="import-close" id="import-close-btn" type="button" aria-label="Fechar">×</button>
+      </div>
+      <div class="import-body" id="import-body"></div>
+      <div class="import-footer" id="import-footer" hidden>
+        <span class="import-footer-note" id="import-footer-note"></span>
+        <div>
+          <button class="import-cancel-btn" id="import-cancel-btn" type="button">Cancelar</button>
+          <button class="import-confirm-btn" id="import-confirm-btn" type="button">Importar selecionados</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(async function () {
+  var DATA ={"content": [{"id": "c0", "type": "content", "title": "Reel: uma a cada oito unidades está com a taxa atrasada", "marca": "uCondo", "plataforma": "Instagram Reels", "formato": "reel", "data": "2026-09-17", "link": "https://www.instagram.com/ucondooficial/reel/DdZrRGyDn48/", "temas": ["Inadimplência", "Automação e Tecnologia"], "recent": false}, {"id": "c1", "type": "content", "title": "Inadimplência em condomínio: como automatizar a cobrança", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-17", "link": "https://www.youtube.com/shorts/4M38cufZAVA", "temas": ["Inadimplência", "Automação e Tecnologia"], "recent": false}, {"id": "c2", "type": "content", "title": "Como Funciona a Automação de Cobranças no Condomínio?", "marca": "uCondo", "plataforma": "YouTube", "formato": "video", "data": "2026-09-17", "link": "https://www.youtube.com/watch?v=oPzHHz6-mQ4", "temas": ["Automação e Tecnologia", "Inadimplência"], "recent": false}, {"id": "c3", "type": "content", "title": "Responsabilidade do síndico: quando o patrimônio pessoal entra em jogo", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-16", "link": "https://www.youtube.com/shorts/CXj5cqzDnj4", "temas": ["Jurídico", "Síndico e Gestão"], "recent": false}, {"id": "c4", "type": "content", "title": "Inadimplência condominial: garantidoras e os limites da cobrança legal", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-15", "link": "https://www.youtube.com/shorts/Ofke3n9r5sg", "temas": ["Inadimplência", "Jurídico"], "recent": false}, {"id": "c5", "type": "content", "title": "Como Organizar o Fluxo de Caixa do Condomínio?", "marca": "uCondo", "plataforma": "YouTube", "formato": "video", "data": "2026-09-15", "link": "https://www.youtube.com/watch?v=AMTx_l4_dCo", "temas": ["Financeiro"], "recent": false}, {"id": "c6", "type": "content", "title": "Reel: como organizar o histórico de inadimplentes", "marca": "uCondo", "plataforma": "Instagram Reels", "formato": "reel", "data": "2026-09-14", "link": "https://www.instagram.com/ucondooficial/reel/DdR2YPGJL8-/", "temas": ["Inadimplência", "Automação e Tecnologia"], "recent": false}, {"id": "c7", "type": "content", "title": "A assembleia de condomínio é mesmo soberana? Entenda a lei", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-14", "link": "https://www.youtube.com/shorts/KhCmQ8TJr1U", "temas": ["Assembleia", "Jurídico"], "recent": false}, {"id": "c8", "type": "content", "title": "Reel: a construtora tem responsabilidade por vício construtivo?", "marca": "TownSq", "plataforma": "Instagram Reels", "formato": "reel", "data": "2026-09-14", "link": "https://www.instagram.com/townsqbr/reel/DdRpWODxV_f/", "temas": ["Jurídico"], "recent": false}, {"id": "c9", "type": "content", "title": "10 erros que podem comprometer a segurança da portaria", "marca": "TownSq", "plataforma": "YouTube", "formato": "video", "data": "2026-09-14", "link": "https://www.youtube.com/watch?v=xLWSIxmRr9Y", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c10", "type": "content", "title": "Procurações em condomínio: limites legais e boas práticas para o síndico", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-13", "link": "https://www.youtube.com/shorts/wkp3aeeOeV4", "temas": ["Jurídico", "Assembleia"], "recent": false}, {"id": "c11", "type": "content", "title": "Economizar em manutenção no condomínio: os erros que custam caro", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-12", "link": "https://www.youtube.com/shorts/wp07CpWmgPE", "temas": ["Financeiro"], "recent": false}, {"id": "c12", "type": "content", "title": "Reel: dois novos casos de falta de transparência", "marca": "uCondo", "plataforma": "Instagram Reels", "formato": "reel", "data": "2026-09-11", "link": "https://www.instagram.com/ucondooficial/reel/DdJh-uUiRVH/", "temas": ["Transparência", "Jurídico"], "recent": false}, {"id": "c13", "type": "content", "title": "Caos financeiro e documental em condomínio: um caso real de recuperação", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-11", "link": "https://www.youtube.com/shorts/S0kqFrIFNKM", "temas": ["Financeiro"], "recent": false}, {"id": "c14", "type": "content", "title": "Falta de transparência causa problemas judiciais em dois condomínios", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-11", "link": "https://www.youtube.com/shorts/4Qvw7NIQRb8", "temas": ["Transparência", "Jurídico"], "recent": false}, {"id": "c15", "type": "content", "title": "Conselho fiscal do condomínio: direitos e deveres", "marca": "TownSq", "plataforma": "YouTube", "formato": "video", "data": "2026-09-11", "link": "https://www.youtube.com/watch?v=I_W4QdQ6lpY", "temas": ["Conselho Fiscal", "Síndico e Gestão"], "recent": false}, {"id": "c16", "type": "content", "title": "Grupos de WhatsApp no condomínio: o perigo por trás da comunicação informal", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-10", "link": "https://www.youtube.com/shorts/ff3-T2FIF9A", "temas": ["Comunicação", "Jurídico"], "recent": false}, {"id": "c17", "type": "content", "title": "Consumos no condomínio: como automatizar cálculos e cobranças no uCondo", "marca": "uCondo", "plataforma": "YouTube", "formato": "video", "data": "2026-09-10", "link": "https://www.youtube.com/watch?v=sw990UaMMJo", "temas": ["Automação e Tecnologia", "Financeiro"], "recent": false}, {"id": "c18", "type": "content", "title": "Gestão de condomínios: tecnologia avançada com sensibilidade humana", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-09", "link": "https://www.youtube.com/shorts/vSEhHt9NqHs", "temas": ["Automação e Tecnologia", "Síndico e Gestão"], "recent": false}, {"id": "c19", "type": "content", "title": "Gestão amadora x gestão profissional: qual a diferença? | Bianca Ruggi | Ep55", "marca": "uCondo", "plataforma": "YouTube", "formato": "podcast", "data": "2026-09-08", "link": "https://www.youtube.com/watch?v=2cuf_X9KImk", "temas": ["Síndico e Gestão"], "recent": false}, {"id": "c20", "type": "content", "title": "Do papel à nuvem: como a tecnologia simplificou a gestão condominial", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-08", "link": "https://www.youtube.com/shorts/UW_pbQsTUPY", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c21", "type": "content", "title": "Reel: a assembleia é mesmo soberana?", "marca": "uCondo", "plataforma": "Instagram Reels", "formato": "reel", "data": "2026-09-04", "link": "https://www.instagram.com/ucondooficial/reel/DdAWYhJhfB2/", "temas": ["Assembleia", "Jurídico"], "recent": false}, {"id": "c22", "type": "content", "title": "Taxa de condomínio barata demais? O barato que sai caro!", "marca": "uCondo", "plataforma": "YouTube Shorts", "formato": "short", "data": "2026-09-04", "link": "https://www.youtube.com/shorts/OWqkG6ufR5g", "temas": ["Custos e Taxas", "Financeiro"], "recent": false}, {"id": "c23", "type": "content", "title": "Reel: como o síndico se posiciona para condomínios de alto padrão", "marca": "TownSq", "plataforma": "Instagram Reels", "formato": "reel", "data": "2026-09-04", "link": "https://www.instagram.com/townsqbr/reel/Dc3ZuE6RoRL/", "temas": ["Síndico e Gestão"], "recent": false}, {"id": "c24", "type": "content", "title": "Funcionário de condomínio pode trabalhar no feriado? Veja a resposta", "marca": "TownSq", "plataforma": "YouTube", "formato": "video", "data": "2026-09-04", "link": "https://www.youtube.com/watch?v=R433_6MCqi4", "temas": ["Trabalho e Funcionários", "Jurídico"], "recent": false}, {"id": "c25", "type": "content", "title": "Acesso a áreas comuns com Qr Code Reverso (Corte LIVE)", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2024-02-19", "link": "https://www.youtube.com/watch?v=j_hgoCfVtJM", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c26", "type": "content", "title": "Ganhe mais com seus condomínios - Módulo de Ofertas Condomb", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2024-02-16", "link": "https://www.youtube.com/watch?v=dxCeMFVeZoE", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c27", "type": "content", "title": "Controle de Vagas Condomob (Corte LIVE)", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2024-02-15", "link": "https://www.youtube.com/watch?v=QXy6NlJCSVY", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c28", "type": "content", "title": "Mapa de Manutenções Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2024-01-17", "link": "https://www.youtube.com/watch?v=eMXS1GMTErE", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c29", "type": "content", "title": "Triagem de Documentos - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2023-11-08", "link": "https://www.youtube.com/watch?v=W8MUG0l0SJw", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c30", "type": "content", "title": "Sistema Financeiro Condomob - Visão Geral", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2023-07-03", "link": "https://www.youtube.com/watch?v=CVEcqArSSIA", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c31", "type": "content", "title": "Controle do nível de caixa d'água Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2022-01-18", "link": "https://www.youtube.com/watch?v=FWmV9Ysoreo", "temas": ["Financeiro", "Manutenção e Patrimônio"], "recent": false}, {"id": "c32", "type": "content", "title": "Reconhecimento Facial Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-12-23", "link": "https://www.youtube.com/watch?v=FmJrJQq64Uo", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c33", "type": "content", "title": "Cadastro da foto pelo aplicativo Condomob - Reconhecimento facial", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-11-05", "link": "https://www.youtube.com/watch?v=-9jtoDkfmwE", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c34", "type": "content", "title": "Módulo Ofertas - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-08-13", "link": "https://www.youtube.com/watch?v=D5yNEMlnECU", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c35", "type": "content", "title": "Mercado Interno- Aplicativo Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-08-03", "link": "https://www.youtube.com/watch?v=pjQbmHcXufA", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c36", "type": "content", "title": "Aplicativo Condomob 2021 - Visão Geral", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-07-02", "link": "https://www.youtube.com/watch?v=2llX2qVEMbo", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c37", "type": "content", "title": "Cadastro de biometria e tag cartão no Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-06-18", "link": "https://www.youtube.com/watch?v=taqHoJffdS8", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c38", "type": "content", "title": "Pasta de contas do condomínio com apenas um clique!!! - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-03-13", "link": "https://www.youtube.com/watch?v=qaO8jvtYMvo", "temas": ["Financeiro"], "recent": false}, {"id": "c39", "type": "content", "title": "Redução da inadimplência com aplicativo Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-03-01", "link": "https://www.youtube.com/watch?v=xtNbsoKh9u8", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c40", "type": "content", "title": "Controle de estoque e patrimônio do condomínio - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2021-01-12", "link": "https://www.youtube.com/watch?v=j9tEaKoVmQY", "temas": ["Financeiro", "Manutenção e Patrimônio"], "recent": false}, {"id": "c41", "type": "content", "title": "Cadastro de QRCODE para prestador de serviço - Controle de Acesso Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2020-12-29", "link": "https://www.youtube.com/watch?v=i6zjMUQeKf8", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c42", "type": "content", "title": "Uso da Antena RFID com Condomob Controle de Acesso", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2020-11-27", "link": "https://www.youtube.com/watch?v=XSgEzxmLY1c", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c43", "type": "content", "title": "Condomob - Controle de acesso autônomo", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2020-11-20", "link": "https://www.youtube.com/watch?v=BZ2txhfoFiw", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c44", "type": "content", "title": "Controle de Acesso de portaria Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2020-11-05", "link": "https://www.youtube.com/watch?v=y28ixx4Jg4A", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c45", "type": "content", "title": "Controle de patrimônio e estoque do condomínio - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2020-08-28", "link": "https://www.youtube.com/watch?v=NvNLkTFpKpk", "temas": ["Financeiro", "Manutenção e Patrimônio"], "recent": false}, {"id": "c46", "type": "content", "title": "Integração da Assembleia Virtual Condomob com Zoom", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2020-06-25", "link": "https://www.youtube.com/watch?v=Zo4vJxlO0BU", "temas": ["Assembleia"], "recent": false}, {"id": "c47", "type": "content", "title": "Condomob Controle de Acesso - Credenciamento de acesso", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2020-05-08", "link": "https://www.youtube.com/watch?v=jDhltY8-lwo", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c48", "type": "content", "title": "Novas configurações de reserva de espaço comum de condomínio - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-12-30", "link": "https://www.youtube.com/watch?v=zK_-gGagvWM", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c49", "type": "content", "title": "Remessa de Pagamento Bancária - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-11-14", "link": "https://www.youtube.com/watch?v=r1vMCliOciw", "temas": ["Financeiro", "Manutenção e Patrimônio"], "recent": false}, {"id": "c50", "type": "content", "title": "Assembleias Virtuais com enquetes vinculadas - Condomob Social", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-09-04", "link": "https://www.youtube.com/watch?v=tNH4_WD03Do", "temas": ["Assembleia", "Automação e Tecnologia"], "recent": false}, {"id": "c51", "type": "content", "title": "Acesso veículo - Condomob Controle de Acesso", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-08-09", "link": "https://www.youtube.com/watch?v=4drF9UT1-LM", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c52", "type": "content", "title": "Cadastro de tag - Condomob Controle de Acesso", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-08-09", "link": "https://www.youtube.com/watch?v=akG_MwqVfTc", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c53", "type": "content", "title": "Consumo com foto no aplicativo - Condomob Social", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-06-21", "link": "https://www.youtube.com/watch?v=liJbfOGa7a8", "temas": ["Portaria e Segurança", "Manutenção e Patrimônio"], "recent": false}, {"id": "c54", "type": "content", "title": "Rascunho de Despesa para condomínios e administradoras - Condomob Financeiro.", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-05-22", "link": "https://www.youtube.com/watch?v=ckEwhZxUPR8", "temas": ["Financeiro"], "recent": false}, {"id": "c55", "type": "content", "title": "Nova área de Boletos - Aplicativo Condomob 2.0", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-04-29", "link": "https://www.youtube.com/watch?v=QM1T3us2jKU", "temas": ["Financeiro"], "recent": false}, {"id": "c56", "type": "content", "title": "Financeiro + Social + Aplicativo para condomínio", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-02-18", "link": "https://www.youtube.com/watch?v=dHnd0apYrE0", "temas": ["Financeiro"], "recent": false}, {"id": "c57", "type": "content", "title": "Prestação de Contas Digital completa com um clique - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-01-30", "link": "https://www.youtube.com/watch?v=XFuyDsptdyQ", "temas": ["Financeiro"], "recent": false}, {"id": "c58", "type": "content", "title": "Importando inadimplência de uma planilha Excel - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2019-01-03", "link": "https://www.youtube.com/watch?v=WQa1G1AEQyc", "temas": ["Financeiro"], "recent": false}, {"id": "c59", "type": "content", "title": "Acordos - Acesso restrito para empresas de cobranças e advogados", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-12-28", "link": "https://www.youtube.com/watch?v=o1AxhP3PsbM", "temas": ["Portaria e Segurança", "Financeiro"], "recent": false}, {"id": "c60", "type": "content", "title": "Condomob na festa do síndico 2018 em Praia Grande - SP", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-12-23", "link": "https://www.youtube.com/watch?v=vjOu3NFVtvA", "temas": ["Eventos e Institucional"], "recent": false}, {"id": "c61", "type": "content", "title": "Evento Piracicaba - Feira dos Condomínios - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-12-11", "link": "https://www.youtube.com/watch?v=n6faaD2EOnU", "temas": ["Eventos e Institucional"], "recent": false}, {"id": "c62", "type": "content", "title": "Condomob presente na 3º Regiocondo -  Aguas Claras - Brasília -DF", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-12-11", "link": "https://www.youtube.com/watch?v=kPH8u0JxRWw", "temas": ["Manutenção e Patrimônio", "Eventos e Institucional"], "recent": false}, {"id": "c63", "type": "content", "title": "Compartilhamento online de receitas e despesas no aplicativo Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-12-05", "link": "https://www.youtube.com/watch?v=_OxZ91ekXiI", "temas": ["Financeiro"], "recent": false}, {"id": "c64", "type": "content", "title": "Aplicativo Social Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-11-23", "link": "https://www.youtube.com/watch?v=6umXSe8Cgzw", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c65", "type": "content", "title": "1º acesso ao aplicativo Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-11-09", "link": "https://www.youtube.com/watch?v=1z4LpzuxdN8", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c66", "type": "content", "title": "Pack de atualizações outubro 2018  -  Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-11-01", "link": "https://www.youtube.com/watch?v=8mz8BBkqwAA", "temas": ["Financeiro"], "recent": false}, {"id": "c67", "type": "content", "title": "CONDOMOB - API  PJBANK", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-08-20", "link": "https://www.youtube.com/watch?v=3tpyFzIaDZI", "temas": ["Financeiro"], "recent": false}, {"id": "c68", "type": "content", "title": "Baixa e Retorno Bancário automático - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-06-25", "link": "https://www.youtube.com/watch?v=10PSTM1AYnE", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c69", "type": "content", "title": "Reduzindo a Inadimplência do Condomínio - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-06-01", "link": "https://www.youtube.com/watch?v=-yUb5O9ng2M", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c70", "type": "content", "title": "Mural de avisos em grupo - Condomob Social", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-05-28", "link": "https://www.youtube.com/watch?v=CwmEumjU4s8", "temas": ["Comunicação"], "recent": false}, {"id": "c71", "type": "content", "title": "Novas Funções Aplicativo Condomob 2018", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-05-24", "link": "https://www.youtube.com/watch?v=jVcOy-xemLM", "temas": ["Financeiro"], "recent": false}, {"id": "c72", "type": "content", "title": "Boleto upload - Condomob Social", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-05-01", "link": "https://www.youtube.com/watch?v=z9domvt-DCI", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c73", "type": "content", "title": "Honorarios Advocatícios - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-04-10", "link": "https://www.youtube.com/watch?v=xI8YBBZ6in0", "temas": ["Financeiro"], "recent": false}, {"id": "c74", "type": "content", "title": "Lançamentos de Despesas Eventuais e Recorrentes - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-02-07", "link": "https://www.youtube.com/watch?v=8XV8k0ncI6M", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c75", "type": "content", "title": "Gerando Cobranças - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-02-06", "link": "https://www.youtube.com/watch?v=n0RtsFN8pIA", "temas": ["Financeiro"], "recent": false}, {"id": "c76", "type": "content", "title": "Conciliação Bancária - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-01-31", "link": "https://www.youtube.com/watch?v=OBurMbS2o9A", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c77", "type": "content", "title": "Cadastro e Replicação de Fornecedores - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-01-30", "link": "https://www.youtube.com/watch?v=iJHBw0b_JO4", "temas": ["Financeiro"], "recent": false}, {"id": "c78", "type": "content", "title": "Lançamentos de Receitas Condominiais - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-01-30", "link": "https://www.youtube.com/watch?v=xoR5tApiepY", "temas": ["Financeiro"], "recent": false}, {"id": "c79", "type": "content", "title": "Plano de Contas com Replicação - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-01-30", "link": "https://www.youtube.com/watch?v=aC9910JfVdE", "temas": ["Financeiro"], "recent": false}, {"id": "c80", "type": "content", "title": "Ferramentas automatizadas - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-01-25", "link": "https://www.youtube.com/watch?v=dG0pWxKWpJI", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c81", "type": "content", "title": "Assembleia Virtual  - Condomob Social", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2018-01-01", "link": "https://www.youtube.com/watch?v=lod7vl68kQQ", "temas": ["Assembleia"], "recent": false}, {"id": "c82", "type": "content", "title": "Régua de Cobrança Condominial Automática - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-12-31", "link": "https://www.youtube.com/watch?v=6kPMVcUFQSs", "temas": ["Financeiro"], "recent": false}, {"id": "c83", "type": "content", "title": "Boleto no aplicativo - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-11-22", "link": "https://www.youtube.com/watch?v=x5e81V4c72Q", "temas": ["Financeiro"], "recent": false}, {"id": "c84", "type": "content", "title": "Confirmação de leitura e recebimento de boleto no app - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-11-22", "link": "https://www.youtube.com/watch?v=CHNaHLJlm78", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c85", "type": "content", "title": "Acordos com Inadimplentes - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-11-17", "link": "https://www.youtube.com/watch?v=L_M6BGY-F_o", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c86", "type": "content", "title": "Consumo Individual  -  Parte 2 Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-10-06", "link": "https://www.youtube.com/watch?v=vKIu9v1DSGA", "temas": ["Manutenção e Patrimônio"], "recent": false}, {"id": "c87", "type": "content", "title": "Tabelas de Consumo Parte 1 - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-10-06", "link": "https://www.youtube.com/watch?v=d8bpfAm-DkM", "temas": ["Manutenção e Patrimônio"], "recent": false}, {"id": "c88", "type": "content", "title": "Personalização de ícones e Alertas de Pendências do Sistema - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-09-21", "link": "https://www.youtube.com/watch?v=-O7VwIJxdws", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c89", "type": "content", "title": "Gerando cobranças - Reservas de Espaço - Condomob Financeiro", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-09-15", "link": "https://www.youtube.com/watch?v=wGHzvF_IEw4", "temas": ["Financeiro", "Automação e Tecnologia"], "recent": false}, {"id": "c90", "type": "content", "title": "Portaria - Funções Administrativas do Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-09-13", "link": "https://www.youtube.com/watch?v=XYYO7OnWcFY", "temas": ["Portaria e Segurança", "Comunicação"], "recent": false}, {"id": "c91", "type": "content", "title": "Autorização de Visitante com foto pelo App", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-09-12", "link": "https://www.youtube.com/watch?v=OqYNp7LX9mg", "temas": ["Portaria e Segurança", "Automação e Tecnologia"], "recent": false}, {"id": "c92", "type": "content", "title": "Condomob na Mídia", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-08-29", "link": "https://www.youtube.com/watch?v=h5hQzG1OBuc", "temas": ["Comunicação"], "recent": false}, {"id": "c93", "type": "content", "title": "Livro de Ocorrências Virtual do Condomínio Parte 1 - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-08-06", "link": "https://www.youtube.com/watch?v=JOzettIfsdQ", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c94", "type": "content", "title": "Visão Geral do Sistema Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-06-29", "link": "https://www.youtube.com/watch?v=Cboy1DJ7osA", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c95", "type": "content", "title": "Mapa de Manutenção do Condomínio - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-06-08", "link": "https://www.youtube.com/watch?v=jIh9AL_XiKw", "temas": ["Manutenção e Patrimônio"], "recent": false}, {"id": "c96", "type": "content", "title": "Condomob Social", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-05-31", "link": "https://www.youtube.com/watch?v=3ZmO1KL-_WY", "temas": ["Portaria e Segurança", "Automação e Tecnologia"], "recent": false}, {"id": "c97", "type": "content", "title": "Cadastro e Controle de Objetos - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-05-01", "link": "https://www.youtube.com/watch?v=h4UQq37ZWBQ", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c98", "type": "content", "title": "Edição de Unidades e Cadastro de Moradores - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-05-01", "link": "https://www.youtube.com/watch?v=NmreV730YQM", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c99", "type": "content", "title": "Lista de convidados de Salão de Festa - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-27", "link": "https://www.youtube.com/watch?v=43L-3pDQEEg", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c100", "type": "content", "title": "Participando de enquetes - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-27", "link": "https://www.youtube.com/watch?v=P3hE7N6Czng", "temas": ["Assembleia"], "recent": false}, {"id": "c101", "type": "content", "title": "Registrando visitantes temporários para acesso a minha residência - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-21", "link": "https://www.youtube.com/watch?v=7ZtccfXAX2E", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c102", "type": "content", "title": "Moradores e Visitantes: Cadastro pelo morador e Consulta do Porteiro - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-20", "link": "https://www.youtube.com/watch?v=nc19DhMwtxM", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c103", "type": "content", "title": "Envio de Boletos do condomínio - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-09", "link": "https://www.youtube.com/watch?v=qprgwFfGD3M", "temas": ["Financeiro"], "recent": false}, {"id": "c104", "type": "content", "title": "Primeiro Acesso  - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-09", "link": "https://www.youtube.com/watch?v=TKRTZA-FpLU", "temas": ["Portaria e Segurança", "Automação e Tecnologia"], "recent": false}, {"id": "c105", "type": "content", "title": "Criação de enquetes para os moradores - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-06", "link": "https://www.youtube.com/watch?v=82fsM8qeJ6I", "temas": ["Assembleia"], "recent": false}, {"id": "c106", "type": "content", "title": "Relatório de participantes de enquetes - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-06", "link": "https://www.youtube.com/watch?v=_nxXQTULfgg", "temas": ["Assembleia"], "recent": false}, {"id": "c107", "type": "content", "title": "Calendário de Eventos - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-03", "link": "https://www.youtube.com/watch?v=LmhywpcEKC4", "temas": ["Assembleia", "Eventos e Institucional"], "recent": false}, {"id": "c108", "type": "content", "title": "Unidades do condomínio - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-02", "link": "https://www.youtube.com/watch?v=7Vhm0ZDM2i4", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c109", "type": "content", "title": "Cadastrando Reservas de Espaço - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-01", "link": "https://www.youtube.com/watch?v=Tb9gV7DmoU8", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c110", "type": "content", "title": "Comunicação: Comunicado Individual - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-01", "link": "https://www.youtube.com/watch?v=Z5UpP17ViGA", "temas": ["Comunicação"], "recent": false}, {"id": "c111", "type": "content", "title": "Comunicação - Mural de Avisos - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-01", "link": "https://www.youtube.com/watch?v=k7KlRprmmAY", "temas": ["Comunicação", "Automação e Tecnologia"], "recent": false}, {"id": "c112", "type": "content", "title": "Portaria: Encomendas e Pacotes - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-01", "link": "https://www.youtube.com/watch?v=cnn8Kw1S5do", "temas": ["Portaria e Segurança"], "recent": false}, {"id": "c113", "type": "content", "title": "Reserva de Espaço no Celular - Condomob", "marca": "Condomob", "plataforma": "YouTube", "formato": "video", "data": "2017-02-01", "link": "https://www.youtube.com/watch?v=v-HCwQS5Bkw", "temas": ["Automação e Tecnologia"], "recent": false}, {"id": "c114", "type": "content", "title": "Winker - Post - Live sobre Reforma Tributária", "marca": "Winker", "plataforma": "Instagram", "formato": "post", "data": "2026-09-28", "link": "https://www.instagram.com/winkeroficial/p/Dd1PYsMINFM/", "temas": ["Jurídico", "Financeiro"], "recent": true}, {"id": "c115", "type": "content", "title": "Winker - Post - Winker Access (segurança e controle de acesso)", "marca": "Winker", "plataforma": "Instagram", "formato": "post", "data": "2026-09-30", "link": "https://www.instagram.com/winkeroficial/p/Dd643yYCZmv/", "temas": ["Portaria e Segurança"], "recent": true}, {"id": "c116", "type": "content", "title": "Winker - Post - Live com Papo Segurança sobre o Novo Aplicativo Winker", "marca": "Winker", "plataforma": "Instagram", "formato": "post", "data": "2026-10-02", "link": "https://www.instagram.com/winkeroficial/p/DeADFmJlsuD/", "temas": ["Portaria e Segurança", "Eventos e Institucional"], "recent": true}, {"id": "c117", "type": "content", "title": "Winker - Reel - Case Efetiva Administradora", "marca": "Winker", "plataforma": "Instagram Reels", "formato": "reel", "data": "2026-10-06", "link": "https://www.instagram.com/winkeroficial/reel/DeJ2YmhDqkw/", "temas": ["Síndico e Gestão", "Automação e Tecnologia"], "recent": true}, {"id": "c118", "type": "content", "title": "Winker - Post - NFS-e para condomínios (Reforma Tributária)", "marca": "Winker", "plataforma": "Instagram", "formato": "post", "data": "2026-10-07", "link": "https://www.instagram.com/winkeroficial/p/DeM3AIjAEIv/", "temas": ["Custos e Taxas", "Jurídico"], "recent": true}, {"id": "c119", "type": "content", "title": "Winker - Reel - Seg Summit 2026", "marca": "Winker", "plataforma": "Instagram Reels", "formato": "reel", "data": "2026-10-09", "link": "https://www.instagram.com/winkeroficial/reel/DeRy1BzOfsn/", "temas": ["Eventos e Institucional", "Portaria e Segurança"], "recent": true}], "temas": [{"id": "t_Inadimplência", "type": "tema", "title": "Inadimplência", "count": 5}, {"id": "t_Automação e Tecnologia", "type": "tema", "title": "Automação e Tecnologia", "count": 38}, {"id": "t_Jurídico", "type": "tema", "title": "Jurídico", "count": 12}, {"id": "t_Síndico e Gestão", "type": "tema", "title": "Síndico e Gestão", "count": 6}, {"id": "t_Financeiro", "type": "tema", "title": "Financeiro", "count": 42}, {"id": "t_Assembleia", "type": "tema", "title": "Assembleia", "count": 10}, {"id": "t_Portaria e Segurança", "type": "tema", "title": "Portaria e Segurança", "count": 29}, {"id": "t_Transparência", "type": "tema", "title": "Transparência", "count": 2}, {"id": "t_Conselho Fiscal", "type": "tema", "title": "Conselho Fiscal", "count": 1}, {"id": "t_Comunicação", "type": "tema", "title": "Comunicação", "count": 6}, {"id": "t_Custos e Taxas", "type": "tema", "title": "Custos e Taxas", "count": 2}, {"id": "t_Trabalho e Funcionários", "type": "tema", "title": "Trabalho e Funcionários", "count": 1}, {"id": "t_Manutenção e Patrimônio", "type": "tema", "title": "Manutenção e Patrimônio", "count": 9}, {"id": "t_Eventos e Institucional", "type": "tema", "title": "Eventos e Institucional", "count": 6}], "edges": [{"source": "c0", "target": "t_Inadimplência"}, {"source": "c0", "target": "t_Automação e Tecnologia"}, {"source": "c1", "target": "t_Inadimplência"}, {"source": "c1", "target": "t_Automação e Tecnologia"}, {"source": "c2", "target": "t_Automação e Tecnologia"}, {"source": "c2", "target": "t_Inadimplência"}, {"source": "c3", "target": "t_Jurídico"}, {"source": "c3", "target": "t_Síndico e Gestão"}, {"source": "c4", "target": "t_Inadimplência"}, {"source": "c4", "target": "t_Jurídico"}, {"source": "c5", "target": "t_Financeiro"}, {"source": "c6", "target": "t_Inadimplência"}, {"source": "c6", "target": "t_Automação e Tecnologia"}, {"source": "c7", "target": "t_Assembleia"}, {"source": "c7", "target": "t_Jurídico"}, {"source": "c8", "target": "t_Jurídico"}, {"source": "c9", "target": "t_Portaria e Segurança"}, {"source": "c10", "target": "t_Jurídico"}, {"source": "c10", "target": "t_Assembleia"}, {"source": "c11", "target": "t_Financeiro"}, {"source": "c12", "target": "t_Transparência"}, {"source": "c12", "target": "t_Jurídico"}, {"source": "c13", "target": "t_Financeiro"}, {"source": "c14", "target": "t_Transparência"}, {"source": "c14", "target": "t_Jurídico"}, {"source": "c15", "target": "t_Conselho Fiscal"}, {"source": "c15", "target": "t_Síndico e Gestão"}, {"source": "c16", "target": "t_Comunicação"}, {"source": "c16", "target": "t_Jurídico"}, {"source": "c17", "target": "t_Automação e Tecnologia"}, {"source": "c17", "target": "t_Financeiro"}, {"source": "c18", "target": "t_Automação e Tecnologia"}, {"source": "c18", "target": "t_Síndico e Gestão"}, {"source": "c19", "target": "t_Síndico e Gestão"}, {"source": "c20", "target": "t_Automação e Tecnologia"}, {"source": "c21", "target": "t_Assembleia"}, {"source": "c21", "target": "t_Jurídico"}, {"source": "c22", "target": "t_Custos e Taxas"}, {"source": "c22", "target": "t_Financeiro"}, {"source": "c23", "target": "t_Síndico e Gestão"}, {"source": "c24", "target": "t_Trabalho e Funcionários"}, {"source": "c24", "target": "t_Jurídico"}, {"source": "c25", "target": "t_Portaria e Segurança"}, {"source": "c26", "target": "t_Automação e Tecnologia"}, {"source": "c27", "target": "t_Portaria e Segurança"}, {"source": "c28", "target": "t_Automação e Tecnologia"}, {"source": "c29", "target": "t_Financeiro"}, {"source": "c29", "target": "t_Automação e Tecnologia"}, {"source": "c30", "target": "t_Financeiro"}, {"source": "c30", "target": "t_Automação e Tecnologia"}, {"source": "c31", "target": "t_Financeiro"}, {"source": "c31", "target": "t_Manutenção e Patrimônio"}, {"source": "c32", "target": "t_Portaria e Segurança"}, {"source": "c33", "target": "t_Portaria e Segurança"}, {"source": "c34", "target": "t_Automação e Tecnologia"}, {"source": "c35", "target": "t_Automação e Tecnologia"}, {"source": "c36", "target": "t_Automação e Tecnologia"}, {"source": "c37", "target": "t_Portaria e Segurança"}, {"source": "c38", "target": "t_Financeiro"}, {"source": "c39", "target": "t_Financeiro"}, {"source": "c39", "target": "t_Automação e Tecnologia"}, {"source": "c40", "target": "t_Financeiro"}, {"source": "c40", "target": "t_Manutenção e Patrimônio"}, {"source": "c41", "target": "t_Portaria e Segurança"}, {"source": "c42", "target": "t_Portaria e Segurança"}, {"source": "c43", "target": "t_Portaria e Segurança"}, {"source": "c44", "target": "t_Portaria e Segurança"}, {"source": "c45", "target": "t_Financeiro"}, {"source": "c45", "target": "t_Manutenção e Patrimônio"}, {"source": "c46", "target": "t_Assembleia"}, {"source": "c47", "target": "t_Portaria e Segurança"}, {"source": "c48", "target": "t_Automação e Tecnologia"}, {"source": "c49", "target": "t_Financeiro"}, {"source": "c49", "target": "t_Manutenção e Patrimônio"}, {"source": "c50", "target": "t_Assembleia"}, {"source": "c50", "target": "t_Automação e Tecnologia"}, {"source": "c51", "target": "t_Portaria e Segurança"}, {"source": "c52", "target": "t_Portaria e Segurança"}, {"source": "c53", "target": "t_Portaria e Segurança"}, {"source": "c53", "target": "t_Manutenção e Patrimônio"}, {"source": "c54", "target": "t_Financeiro"}, {"source": "c55", "target": "t_Financeiro"}, {"source": "c56", "target": "t_Financeiro"}, {"source": "c57", "target": "t_Financeiro"}, {"source": "c58", "target": "t_Financeiro"}, {"source": "c59", "target": "t_Portaria e Segurança"}, {"source": "c59", "target": "t_Financeiro"}, {"source": "c60", "target": "t_Eventos e Institucional"}, {"source": "c61", "target": "t_Eventos e Institucional"}, {"source": "c62", "target": "t_Manutenção e Patrimônio"}, {"source": "c62", "target": "t_Eventos e Institucional"}, {"source": "c63", "target": "t_Financeiro"}, {"source": "c64", "target": "t_Financeiro"}, {"source": "c64", "target": "t_Automação e Tecnologia"}, {"source": "c65", "target": "t_Portaria e Segurança"}, {"source": "c66", "target": "t_Financeiro"}, {"source": "c67", "target": "t_Financeiro"}, {"source": "c68", "target": "t_Financeiro"}, {"source": "c68", "target": "t_Automação e Tecnologia"}, {"source": "c69", "target": "t_Financeiro"}, {"source": "c69", "target": "t_Automação e Tecnologia"}, {"source": "c70", "target": "t_Comunicação"}, {"source": "c71", "target": "t_Financeiro"}, {"source": "c72", "target": "t_Financeiro"}, {"source": "c72", "target": "t_Automação e Tecnologia"}, {"source": "c73", "target": "t_Financeiro"}, {"source": "c74", "target": "t_Financeiro"}, {"source": "c74", "target": "t_Automação e Tecnologia"}, {"source": "c75", "target": "t_Financeiro"}, {"source": "c76", "target": "t_Financeiro"}, {"source": "c76", "target": "t_Automação e Tecnologia"}, {"source": "c77", "target": "t_Financeiro"}, {"source": "c78", "target": "t_Financeiro"}, {"source": "c79", "target": "t_Financeiro"}, {"source": "c80", "target": "t_Financeiro"}, {"source": "c80", "target": "t_Automação e Tecnologia"}, {"source": "c81", "target": "t_Assembleia"}, {"source": "c82", "target": "t_Financeiro"}, {"source": "c83", "target": "t_Financeiro"}, {"source": "c84", "target": "t_Financeiro"}, {"source": "c84", "target": "t_Automação e Tecnologia"}, {"source": "c85", "target": "t_Financeiro"}, {"source": "c85", "target": "t_Automação e Tecnologia"}, {"source": "c86", "target": "t_Manutenção e Patrimônio"}, {"source": "c87", "target": "t_Manutenção e Patrimônio"}, {"source": "c88", "target": "t_Automação e Tecnologia"}, {"source": "c89", "target": "t_Financeiro"}, {"source": "c89", "target": "t_Automação e Tecnologia"}, {"source": "c90", "target": "t_Portaria e Segurança"}, {"source": "c90", "target": "t_Comunicação"}, {"source": "c91", "target": "t_Portaria e Segurança"}, {"source": "c91", "target": "t_Automação e Tecnologia"}, {"source": "c92", "target": "t_Comunicação"}, {"source": "c93", "target": "t_Portaria e Segurança"}, {"source": "c94", "target": "t_Automação e Tecnologia"}, {"source": "c95", "target": "t_Manutenção e Patrimônio"}, {"source": "c96", "target": "t_Portaria e Segurança"}, {"source": "c96", "target": "t_Automação e Tecnologia"}, {"source": "c97", "target": "t_Portaria e Segurança"}, {"source": "c98", "target": "t_Automação e Tecnologia"}, {"source": "c99", "target": "t_Portaria e Segurança"}, {"source": "c100", "target": "t_Assembleia"}, {"source": "c101", "target": "t_Portaria e Segurança"}, {"source": "c102", "target": "t_Portaria e Segurança"}, {"source": "c103", "target": "t_Financeiro"}, {"source": "c104", "target": "t_Portaria e Segurança"}, {"source": "c104", "target": "t_Automação e Tecnologia"}, {"source": "c105", "target": "t_Assembleia"}, {"source": "c106", "target": "t_Assembleia"}, {"source": "c107", "target": "t_Assembleia"}, {"source": "c107", "target": "t_Eventos e Institucional"}, {"source": "c108", "target": "t_Automação e Tecnologia"}, {"source": "c109", "target": "t_Automação e Tecnologia"}, {"source": "c110", "target": "t_Comunicação"}, {"source": "c111", "target": "t_Comunicação"}, {"source": "c111", "target": "t_Automação e Tecnologia"}, {"source": "c112", "target": "t_Portaria e Segurança"}, {"source": "c113", "target": "t_Automação e Tecnologia"}, {"source": "c114", "target": "t_Jurídico"}, {"source": "c114", "target": "t_Financeiro"}, {"source": "c115", "target": "t_Portaria e Segurança"}, {"source": "c116", "target": "t_Portaria e Segurança"}, {"source": "c116", "target": "t_Eventos e Institucional"}, {"source": "c117", "target": "t_Síndico e Gestão"}, {"source": "c117", "target": "t_Automação e Tecnologia"}, {"source": "c118", "target": "t_Custos e Taxas"}, {"source": "c118", "target": "t_Jurídico"}, {"source": "c119", "target": "t_Eventos e Institucional"}, {"source": "c119", "target": "t_Portaria e Segurança"}], "temaEdges": [{"source": "t_Automação e Tecnologia", "target": "t_Inadimplência", "weight": 4}, {"source": "t_Jurídico", "target": "t_Síndico e Gestão", "weight": 1}, {"source": "t_Inadimplência", "target": "t_Jurídico", "weight": 1}, {"source": "t_Assembleia", "target": "t_Jurídico", "weight": 3}, {"source": "t_Jurídico", "target": "t_Transparência", "weight": 2}, {"source": "t_Conselho Fiscal", "target": "t_Síndico e Gestão", "weight": 1}, {"source": "t_Comunicação", "target": "t_Jurídico", "weight": 1}, {"source": "t_Automação e Tecnologia", "target": "t_Financeiro", "weight": 14}, {"source": "t_Automação e Tecnologia", "target": "t_Síndico e Gestão", "weight": 2}, {"source": "t_Custos e Taxas", "target": "t_Financeiro", "weight": 1}, {"source": "t_Jurídico", "target": "t_Trabalho e Funcionários", "weight": 1}, {"source": "t_Financeiro", "target": "t_Manutenção e Patrimônio", "weight": 4}, {"source": "t_Assembleia", "target": "t_Automação e Tecnologia", "weight": 1}, {"source": "t_Manutenção e Patrimônio", "target": "t_Portaria e Segurança", "weight": 1}, {"source": "t_Financeiro", "target": "t_Portaria e Segurança", "weight": 1}, {"source": "t_Eventos e Institucional", "target": "t_Manutenção e Patrimônio", "weight": 1}, {"source": "t_Comunicação", "target": "t_Portaria e Segurança", "weight": 1}, {"source": "t_Automação e Tecnologia", "target": "t_Portaria e Segurança", "weight": 3}, {"source": "t_Assembleia", "target": "t_Eventos e Institucional", "weight": 1}, {"source": "t_Automação e Tecnologia", "target": "t_Comunicação", "weight": 1}, {"source": "t_Jurídico", "target": "t_Financeiro", "weight": 1}, {"source": "t_Portaria e Segurança", "target": "t_Eventos e Institucional", "weight": 2}, {"source": "t_Custos e Taxas", "target": "t_Jurídico", "weight": 1}], "matrix": {"brands": ["uCondo", "TownSq", "Condomob", "Winker"], "temas": ["Financeiro", "Automação e Tecnologia", "Portaria e Segurança", "Jurídico", "Assembleia", "Manutenção e Patrimônio", "Comunicação", "Inadimplência", "Síndico e Gestão", "Eventos e Institucional", "Transparência", "Conselho Fiscal", "Custos e Taxas", "Trabalho e Funcionários"], "cells": [{"brand": "uCondo", "tema": "Financeiro", "count": 5}, {"brand": "uCondo", "tema": "Automação e Tecnologia", "count": 7}, {"brand": "uCondo", "tema": "Portaria e Segurança", "count": 0}, {"brand": "uCondo", "tema": "Jurídico", "count": 8}, {"brand": "uCondo", "tema": "Assembleia", "count": 3}, {"brand": "uCondo", "tema": "Manutenção e Patrimônio", "count": 0}, {"brand": "uCondo", "tema": "Comunicação", "count": 1}, {"brand": "uCondo", "tema": "Inadimplência", "count": 5}, {"brand": "uCondo", "tema": "Síndico e Gestão", "count": 3}, {"brand": "uCondo", "tema": "Eventos e Institucional", "count": 0}, {"brand": "uCondo", "tema": "Transparência", "count": 2}, {"brand": "uCondo", "tema": "Conselho Fiscal", "count": 0}, {"brand": "uCondo", "tema": "Custos e Taxas", "count": 1}, {"brand": "uCondo", "tema": "Trabalho e Funcionários", "count": 0}, {"brand": "TownSq", "tema": "Financeiro", "count": 0}, {"brand": "TownSq", "tema": "Automação e Tecnologia", "count": 0}, {"brand": "TownSq", "tema": "Portaria e Segurança", "count": 1}, {"brand": "TownSq", "tema": "Jurídico", "count": 2}, {"brand": "TownSq", "tema": "Assembleia", "count": 0}, {"brand": "TownSq", "tema": "Manutenção e Patrimônio", "count": 0}, {"brand": "TownSq", "tema": "Comunicação", "count": 0}, {"brand": "TownSq", "tema": "Inadimplência", "count": 0}, {"brand": "TownSq", "tema": "Síndico e Gestão", "count": 2}, {"brand": "TownSq", "tema": "Eventos e Institucional", "count": 0}, {"brand": "TownSq", "tema": "Transparência", "count": 0}, {"brand": "TownSq", "tema": "Conselho Fiscal", "count": 1}, {"brand": "TownSq", "tema": "Custos e Taxas", "count": 0}, {"brand": "TownSq", "tema": "Trabalho e Funcionários", "count": 1}, {"brand": "Condomob", "tema": "Financeiro", "count": 36}, {"brand": "Condomob", "tema": "Automação e Tecnologia", "count": 30}, {"brand": "Condomob", "tema": "Portaria e Segurança", "count": 25}, {"brand": "Condomob", "tema": "Jurídico", "count": 0}, {"brand": "Condomob", "tema": "Assembleia", "count": 7}, {"brand": "Condomob", "tema": "Manutenção e Patrimônio", "count": 9}, {"brand": "Condomob", "tema": "Comunicação", "count": 5}, {"brand": "Condomob", "tema": "Inadimplência", "count": 0}, {"brand": "Condomob", "tema": "Síndico e Gestão", "count": 0}, {"brand": "Condomob", "tema": "Eventos e Institucional", "count": 4}, {"brand": "Condomob", "tema": "Transparência", "count": 0}, {"brand": "Condomob", "tema": "Conselho Fiscal", "count": 0}, {"brand": "Condomob", "tema": "Custos e Taxas", "count": 0}, {"brand": "Condomob", "tema": "Trabalho e Funcionários", "count": 0}, {"brand": "Winker", "tema": "Financeiro", "count": 1}, {"brand": "Winker", "tema": "Automação e Tecnologia", "count": 1}, {"brand": "Winker", "tema": "Portaria e Segurança", "count": 3}, {"brand": "Winker", "tema": "Jurídico", "count": 2}, {"brand": "Winker", "tema": "Assembleia", "count": 0}, {"brand": "Winker", "tema": "Manutenção e Patrimônio", "count": 0}, {"brand": "Winker", "tema": "Comunicação", "count": 0}, {"brand": "Winker", "tema": "Inadimplência", "count": 0}, {"brand": "Winker", "tema": "Síndico e Gestão", "count": 1}, {"brand": "Winker", "tema": "Eventos e Institucional", "count": 2}, {"brand": "Winker", "tema": "Transparência", "count": 0}, {"brand": "Winker", "tema": "Conselho Fiscal", "count": 0}, {"brand": "Winker", "tema": "Custos e Taxas", "count": 1}, {"brand": "Winker", "tema": "Trabalho e Funcionários", "count": 0}]}, "cadence": {"weeks": ["S-9", "S-8", "S-7", "S-6", "S-5", "S-4", "S-3", "S-2", "S-1", "S-0"], "brands": {"uCondo": [0, 0, 0, 0, 2, 8, 10, 0, 0, 0], "TownSq": [0, 0, 0, 0, 2, 1, 2, 0, 0, 0], "Condomob": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "Winker": [0, 0, 0, 0, 0, 0, 0, 0, 3, 3]}}, "meta": {"maxDate": "2026-10-09", "recentCutoff": "2026-09-25"}};
+
+  var BASE_BRAND_ORDER = ["uCondo", "TownSq", "Condomob", "Winker"];
+
+  // Rebuilds every derived field (temas, edges, temaEdges, matrix, meta, cadence,
+  // and each content item's "recent" flag) from DATA.content, the single source
+  // of truth. Safe to call again after content is added (e.g. via import).
+  function recomputeDerived(d) {
+    var content = d.content;
+
+    var brandSet = {};
+    BASE_BRAND_ORDER.forEach(function (b) { brandSet[b] = true; });
+    var brandOrder = BASE_BRAND_ORDER.slice();
+    content.forEach(function (c) {
+      if (!brandSet[c.marca]) { brandSet[c.marca] = true; brandOrder.push(c.marca); }
+    });
+
+    var temaOrder = d.temas.map(function (t) { return t.title; });
+    var temaSet = {};
+    temaOrder.forEach(function (t) { temaSet[t] = true; });
+    content.forEach(function (c) {
+      c.temas.forEach(function (t) {
+        if (!temaSet[t]) { temaSet[t] = true; temaOrder.push(t); }
+      });
+    });
+
+    var matrixTemaOrder = d.matrix.temas.slice();
+    var matrixTemaSet = {};
+    matrixTemaOrder.forEach(function (t) { matrixTemaSet[t] = true; });
+    temaOrder.forEach(function (t) {
+      if (!matrixTemaSet[t]) { matrixTemaSet[t] = true; matrixTemaOrder.push(t); }
+    });
+
+    var temaCount = {};
+    temaOrder.forEach(function (t) { temaCount[t] = 0; });
+    content.forEach(function (c) { c.temas.forEach(function (t) { temaCount[t] = (temaCount[t] || 0) + 1; }); });
+    d.temas = temaOrder.map(function (t) { return { id: "t_" + t, type: "tema", title: t, count: temaCount[t] }; });
+
+    var edges = [];
+    content.forEach(function (c) {
+      c.temas.forEach(function (t) { edges.push({ source: c.id, target: "t_" + t }); });
+    });
+    d.edges = edges;
+
+    var existingOrient = {};
+    (d.temaEdges || []).forEach(function (te) {
+      var a = te.source.slice(2), b = te.target.slice(2);
+      var key = [a, b].sort().join("|||");
+      existingOrient[key] = [te.source, te.target];
+    });
+    var pairWeight = {};
+    content.forEach(function (c) {
+      var ts = c.temas;
+      for (var i = 0; i < ts.length; i++) {
+        for (var j = i + 1; j < ts.length; j++) {
+          var a = ts[i], b = ts[j];
+          var key = [a, b].sort().join("|||");
+          pairWeight[key] = (pairWeight[key] || 0) + 1;
+          if (!existingOrient[key]) existingOrient[key] = ["t_" + a, "t_" + b];
+        }
+      }
+    });
+    var temaEdges = [];
+    Object.keys(pairWeight).forEach(function (key) {
+      var orient = existingOrient[key];
+      temaEdges.push({ source: orient[0], target: orient[1], weight: pairWeight[key] });
+    });
+    d.temaEdges = temaEdges;
+
+    var cells = [];
+    brandOrder.forEach(function (b) {
+      matrixTemaOrder.forEach(function (t) {
+        var count = content.filter(function (c) { return c.marca === b && c.temas.indexOf(t) !== -1; }).length;
+        cells.push({ brand: b, tema: t, count: count });
+      });
+    });
+    d.matrix = { brands: brandOrder, temas: matrixTemaOrder, cells: cells };
+
+    var maxDate = content.reduce(function (mx, c) { return c.data > mx ? c.data : mx; }, content[0].data);
+    var maxD = new Date(maxDate + "T00:00:00");
+    var recentCutoffD = new Date(maxD.getTime());
+    recentCutoffD.setDate(recentCutoffD.getDate() - 14);
+    var recentCutoff = recentCutoffD.toISOString().slice(0, 10);
+    content.forEach(function (c) { c.recent = c.data >= recentCutoff; });
+    d.meta = { maxDate: maxDate, recentCutoff: recentCutoff };
+
+    var weeks = [];
+    for (var wi = 9; wi >= 0; wi--) weeks.push("S-" + wi);
+    var cadenceBrands = {};
+    brandOrder.forEach(function (b) { cadenceBrands[b] = new Array(10).fill(0); });
+    content.forEach(function (c) {
+      var cd = new Date(c.data + "T00:00:00");
+      var diffDays = Math.round((maxD.getTime() - cd.getTime()) / 86400000);
+      var weekFromEnd = Math.floor(diffDays / 7);
+      if (weekFromEnd >= 0 && weekFromEnd <= 9) {
+        cadenceBrands[c.marca][9 - weekFromEnd] += 1;
+      }
+    });
+    d.cadence = { weeks: weeks, brands: cadenceBrands };
+  }
+
+  // Load any previously imported items (shared, persisted via the Worker's
+  // /api/imports endpoint backed by KV) and fold them into DATA before
+  // anything renders.
+  var IMPORT_API = "/api/imports"; // public read
+  try {
+    var bootRes = await fetch(IMPORT_API);
+    if (bootRes.ok) {
+      var bootPayload = await bootRes.json();
+      var existingIds = {};
+      DATA.content.forEach(function (c) { existingIds[c.id] = true; });
+      (bootPayload.items || []).forEach(function (item) {
+        if (item && item.id && item.marca && item.title && item.temas && !existingIds[item.id]) {
+          DATA.content.push(item);
+          existingIds[item.id] = true;
+        }
+      });
+    }
+  } catch (e) { /* proceed with baseline data only */ }
+
+  recomputeDerived(DATA);
+
+  var root = document.querySelector(".viz-root");
+  function cssVar(name) {
+    return getComputedStyle(root).getPropertyValue(name).trim();
+  }
+  var BRAND_CSS_VAR = { uCondo: "--series-ucondo", TownSq: "--series-townsq", Condomob: "--series-condomob", Winker: "--series-winker" };
+  var dynamicBrandColors = {};
+  function brandHex(brand) {
+    if (BRAND_CSS_VAR[brand]) return cssVar(BRAND_CSS_VAR[brand]);
+    // A brand imported later that isn't one of the known ones gets a
+    // deterministic color derived from its name, so new brands never
+    // collide with existing series and stay stable across reloads.
+    if (!dynamicBrandColors[brand]) {
+      var hash = 0;
+      for (var i = 0; i < brand.length; i++) hash = (hash * 31 + brand.charCodeAt(i)) | 0;
+      var hue = Math.abs(hash) % 360;
+      dynamicBrandColors[brand] = "hsl(" + hue + ", 70%, 52%)";
+    }
+    return dynamicBrandColors[brand];
+  }
+
+  var FORMAT_LABEL = { video: "Vídeo", short: "Short", reel: "Reel", podcast: "Podcast", post: "Post" };
+  var FORMAT_SYMBOL = {
+    video: d3.symbolCircle,
+    short: d3.symbolTriangle,
+    reel: d3.symbolSquare,
+    podcast: d3.symbolDiamond,
+    post: d3.symbolStar
+  };
+  var FORMAT_SIZE_MULT = { video: 1, short: 1.15, reel: 1, podcast: 1.35, post: 1.2 };
+
+  var svg = d3.select("#graph-svg");
+  var gLinks, gNodes, gLabels;
+  var width, height;
+  function measure() {
+    var box = svg.node().getBoundingClientRect();
+    width = box.width; height = box.height || 640;
+  }
+  measure();
+
+  var tooltip = d3.select("#tooltip");
+  var chartCard = document.querySelector(".chart-card");
+  function showTooltip(event, html) {
+    tooltip.html(html);
+    var cardBox = chartCard.getBoundingClientRect();
+    var x = event.clientX - cardBox.left + 14;
+    var y = event.clientY - cardBox.top + 10;
+    if (x + 260 > cardBox.width) x = event.clientX - cardBox.left - 270;
+    tooltip.style("left", x + "px").style("top", y + "px").style("opacity", 1);
+  }
+  function hideTooltip() { tooltip.style("opacity", 0); }
+
+  var simulation = null;
+  var currentMode = "content";
+  var brandActive = {};
+  DATA.matrix.brands.forEach(function (b) { brandActive[b] = true; });
+  var formatActive = { video: true, short: true, reel: true, podcast: true, post: true };
+  var recentOnly = false;
+  var searchQuery = "";
+
+  // ---------------- CONTENT <-> TEMA VIEW ----------------
+  function buildContentGraph() {
+    var nodes = [];
+    var nodeById = {};
+    DATA.temas.forEach(function (t) {
+      var n = { id: t.id, type: "tema", title: t.title, count: t.count };
+      nodes.push(n); nodeById[n.id] = n;
+    });
+    DATA.content.forEach(function (c) {
+      var n = { id: c.id, type: "content", title: c.title, marca: c.marca, plataforma: c.plataforma,
+                formato: c.formato, data: c.data, link: c.link, temas: c.temas, recent: c.recent };
+      n.degree = c.temas.length;
+      nodes.push(n); nodeById[n.id] = n;
+    });
+    var links = DATA.edges.map(function (e) { return { source: e.source, target: e.target }; });
+    return { nodes: nodes, links: links, nodeById: nodeById };
+  }
+
+  function renderContentView() {
+    var g = buildContentGraph();
+    var nodes = g.nodes, links = g.links, nodeById = g.nodeById;
+
+    var temaRadius = d3.scaleSqrt().domain([1, d3.max(DATA.temas, function (d) { return d.count; })]).range([9, 34]);
+    var contentRadius = d3.scaleLinear().domain([1, 3]).range([4.5, 7]);
+
+    var symbolGen = d3.symbol();
+
+    var linkSel = gLinks.selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("class", "link")
+      .attr("stroke-width", 1);
+
+    var nodeSel = gNodes.selectAll("g.node")
+      .data(nodes, function (d) { return d.id; })
+      .join(function (enter) {
+        var g = enter.append("g").attr("class", "node");
+        g.append("path").attr("class", "shape");
+        g.append("circle").attr("class", "recent-ring").attr("r", 0);
+        return g;
+      });
+
+    nodeSel.attr("class", function (d) { return "node " + (d.type === "tema" ? "node-tema" : "node-content"); });
+
+    nodeSel.select("path.shape")
+      .attr("d", function (d) {
+        if (d.type === "tema") {
+          var r = temaRadius(d.count);
+          return d3.symbol().type(d3.symbolCircle).size(Math.PI * r * r)();
+        }
+        var r = contentRadius(d.degree) * (FORMAT_SIZE_MULT[d.formato] || 1);
+        var area = d.formato === "video" ? Math.PI * r * r : r * r * 3.4;
+        return d3.symbol().type(FORMAT_SYMBOL[d.formato] || d3.symbolCircle).size(area)();
+      })
+      .attr("fill", function (d) { return d.type === "tema" ? cssVar("--hub-fill") : brandHex(d.marca); })
+      .attr("stroke", function (d) { return d.type === "tema" ? cssVar("--hub-stroke") : cssVar("--page"); })
+      .attr("stroke-width", function (d) { return d.type === "tema" ? 1.5 : 1; });
+
+    nodeSel.select("circle.recent-ring")
+      .attr("r", function (d) { return d.type === "content" && d.recent ? contentRadius(d.degree) * (FORMAT_SIZE_MULT[d.formato] || 1) + 3.5 : 0; });
+
+    var labelSel = gLabels.selectAll("text")
+      .data(DATA.temas)
+      .join("text")
+      .attr("class", "node-label")
+      .attr("text-anchor", "middle")
+      .attr("dy", 3)
+      .text(function (d) { return d.title; });
+
+    nodeSel.on("mousemove", function (event, d) {
+      var html;
+      if (d.type === "tema") {
+        html = '<div class="t-title">' + d.title + '</div><div class="t-meta">' + d.count + ' conteúdos ligados a este tema</div>';
+      } else {
+        html = '<div class="t-title">' + d.title + '</div>' +
+          '<div class="t-meta">' + d.marca + ' · ' + d.plataforma + ' · ' + FORMAT_LABEL[d.formato] + ' · ' + d.data + '</div>' +
+          '<div class="t-meta">Temas: ' + d.temas.join(", ") + '</div>' +
+          (d.recent ? '<div class="t-recent">Últimos 14 dias</div>' : '') +
+          '<a class="t-link" href="' + d.link + '" target="_blank" rel="noopener">Abrir conteúdo →</a>';
+      }
+      showTooltip(event, html);
+    }).on("mouseleave", hideTooltip)
+      .on("click", function (event, d) {
+        if (d.type === "content" && d.link) window.open(d.link, "_blank", "noopener");
+      })
+      .call(drag());
+
+    var PAD_TEMA = 95, PAD_CONTENT = 12;
+    function clampX(d) {
+      var extra = d.type === "tema" ? PAD_TEMA : PAD_CONTENT;
+      return Math.max(extra, Math.min(width - extra, d.x));
+    }
+    function clampY(d) {
+      var extra = d.type === "tema" ? 22 : PAD_CONTENT;
+      return Math.max(extra, Math.min(height - extra, d.y));
+    }
+
+    simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(function (d) { return d.id; }).distance(62).strength(0.55))
+      .force("charge", d3.forceManyBody().strength(function (d) { return d.type === "tema" ? -260 : -55; }))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collide", d3.forceCollide().radius(function (d) {
+        return (d.type === "tema" ? temaRadius(d.count) : contentRadius(d.degree)) + 3;
+      }))
+      .force("x", d3.forceX(width / 2).strength(0.03))
+      .force("y", d3.forceY(height / 2).strength(0.03))
+      .on("tick", function () {
+        nodes.forEach(function (d) { d.x = clampX(d); d.y = clampY(d); });
+        linkSel
+          .attr("x1", function (d) { return d.source.x; })
+          .attr("y1", function (d) { return d.source.y; })
+          .attr("x2", function (d) { return d.target.x; })
+          .attr("y2", function (d) { return d.target.y; });
+        nodeSel.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+        labelSel
+          .attr("x", function (d) { return nodeById[d.id].x; })
+          .attr("y", function (d) { return nodeById[d.id].y; });
+      });
+
+    function drag() {
+      function started(event, d) {
+        if (!event.active) simulation.alphaTarget(0.25).restart();
+        d.fx = d.x; d.fy = d.y;
+      }
+      function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+      function ended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null; d.fy = null;
+      }
+      return d3.drag().on("start", started).on("drag", dragged).on("end", ended);
+    }
+
+    applyContentFilter();
+  }
+
+  function applyContentFilter() {
+    if (currentMode !== "content") return;
+    var q = searchQuery.trim().toLowerCase();
+    gNodes.selectAll("g.node").classed("dim", function (d) {
+      if (d.type === "tema") return false;
+      if (!brandActive[d.marca]) return true;
+      if (!formatActive[d.formato]) return true;
+      if (recentOnly && !d.recent) return true;
+      if (q && d.title.toLowerCase().indexOf(q) === -1) return true;
+      return false;
+    });
+    gLinks.selectAll("line").classed("dim", function (l) {
+      var c = l.source.type === "content" ? l.source : l.target;
+      if (c.type !== "content") return false;
+      if (!brandActive[c.marca]) return true;
+      if (!formatActive[c.formato]) return true;
+      if (recentOnly && !c.recent) return true;
+      if (q && c.title.toLowerCase().indexOf(q) === -1) return true;
+      return false;
+    });
+  }
+
+  // ---------------- TEMA <-> TEMA CO-OCCURRENCE VIEW ----------------
+  function renderTemaView() {
+    var nodes = DATA.temas.map(function (t) { return { id: t.id, type: "tema", title: t.title, count: t.count }; });
+    var nodeById = {};
+    nodes.forEach(function (n) { nodeById[n.id] = n; });
+    var maxW = d3.max(DATA.temaEdges, function (e) { return e.weight; }) || 1;
+    var links = DATA.temaEdges.map(function (e) { return { source: e.source, target: e.target, weight: e.weight }; });
+    var widthScale = d3.scaleLinear().domain([1, maxW]).range([1.4, 8]);
+    var temaRadius = d3.scaleSqrt().domain([1, d3.max(DATA.temas, function (d) { return d.count; })]).range([12, 40]);
+
+    var linkSel = gLinks.selectAll("line")
+      .data(links)
+      .join("line")
+      .attr("class", "link")
+      .attr("stroke-width", function (d) { return widthScale(d.weight); });
+
+    var nodeSel = gNodes.selectAll("g.node")
+      .data(nodes, function (d) { return d.id; })
+      .join(function (enter) {
+        var g = enter.append("g").attr("class", "node node-tema");
+        g.append("circle").attr("class", "shape-circle");
+        return g;
+      });
+    nodeSel.attr("class", "node node-tema");
+    nodeSel.select("circle.shape-circle")
+      .attr("r", function (d) { return temaRadius(d.count); })
+      .attr("fill", cssVar("--hub-fill"))
+      .attr("stroke", cssVar("--hub-stroke"))
+      .attr("stroke-width", 1.5);
+
+    var labelSel = gLabels.selectAll("text")
+      .data(nodes)
+      .join("text")
+      .attr("class", "node-label")
+      .attr("text-anchor", "middle")
+      .attr("dy", 3)
+      .text(function (d) { return d.title; });
+
+    nodeSel.on("mousemove", function (event, d) {
+      var related = links.filter(function (l) { return l.source.id === d.id || l.target.id === d.id || l.source === d.id || l.target === d.id; })
+        .map(function (l) {
+          var otherId = (l.source.id || l.source) === d.id ? (l.target.id || l.target) : (l.source.id || l.source);
+          var other = nodeById[otherId];
+          return other ? (other.title + " (" + l.weight + ")") : null;
+        }).filter(Boolean);
+      var html = '<div class="t-title">' + d.title + '</div>' +
+        '<div class="t-meta">' + d.count + ' conteúdos no total</div>' +
+        (related.length ? '<div class="t-meta">Aparece junto com: ' + related.join(", ") + '</div>' : '<div class="t-meta">Não compartilha conteúdo com outro tema.</div>');
+      showTooltip(event, html);
+    }).on("mouseleave", hideTooltip)
+      .call(drag());
+
+    var PAD = 95;
+    function clampX(d) { return Math.max(PAD, Math.min(width - PAD, d.x)); }
+    function clampY(d) { return Math.max(30, Math.min(height - 30, d.y)); }
+
+    simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(function (d) { return d.id; }).distance(function (l) { return 130 - Math.min(70, l.weight * 8); }).strength(0.5))
+      .force("charge", d3.forceManyBody().strength(-320))
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .force("collide", d3.forceCollide().radius(function (d) { return temaRadius(d.count) + 6; }))
+      .force("x", d3.forceX(width / 2).strength(0.04))
+      .force("y", d3.forceY(height / 2).strength(0.04))
+      .on("tick", function () {
+        nodes.forEach(function (d) { d.x = clampX(d); d.y = clampY(d); });
+        linkSel
+          .attr("x1", function (d) { return d.source.x; })
+          .attr("y1", function (d) { return d.source.y; })
+          .attr("x2", function (d) { return d.target.x; })
+          .attr("y2", function (d) { return d.target.y; });
+        nodeSel.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+        labelSel
+          .attr("x", function (d) { return nodeById[d.id].x; })
+          .attr("y", function (d) { return nodeById[d.id].y; });
+      });
+
+    function drag() {
+      function started(event, d) {
+        if (!event.active) simulation.alphaTarget(0.25).restart();
+        d.fx = d.x; d.fy = d.y;
+      }
+      function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
+      function ended(event, d) {
+        if (!event.active) simulation.alphaTarget(0);
+        d.fx = null; d.fy = null;
+      }
+      return d3.drag().on("start", started).on("drag", dragged).on("end", ended);
+    }
+  }
+
+  function clearSvg() {
+    if (simulation) { simulation.stop(); simulation = null; }
+    svg.selectAll("*").remove();
+    gLinks = svg.append("g").attr("class", "links");
+    gNodes = svg.append("g").attr("class", "nodes");
+    gLabels = svg.append("g").attr("class", "labels");
+  }
+
+  function renderMode() {
+    measure();
+    clearSvg();
+    if (currentMode === "content") {
+      renderContentView();
+    } else {
+      renderTemaView();
+    }
+  }
+
+  // ---------------- toolbar wiring ----------------
+  document.querySelectorAll('#toolbar-view .chip[data-view]').forEach(function (chip) {
+    chip.addEventListener("click", function () {
+      var view = chip.dataset.view;
+      if (view === currentMode) return;
+      currentMode = view;
+      document.querySelectorAll('#toolbar-view .chip[data-view]').forEach(function (c) {
+        c.classList.toggle("toggle-on", c === chip);
+      });
+      var toolbarBrand = document.getElementById("toolbar");
+      var toolbarFormat = document.getElementById("toolbar-format");
+      var searchInput = document.getElementById("search-input");
+      var recentChip = document.getElementById("recent-toggle");
+      var shapeLegend = document.getElementById("shape-legend");
+      var isContent = currentMode === "content";
+      toolbarBrand.style.display = isContent ? "" : "none";
+      toolbarFormat.style.display = isContent ? "" : "none";
+      searchInput.style.display = isContent ? "" : "none";
+      recentChip.style.display = isContent ? "" : "none";
+      shapeLegend.style.display = isContent ? "" : "none";
+      document.getElementById("rank-title").textContent = isContent ? "Temas mais conectados" : "Temas mais conectados";
+      document.getElementById("legend-note").textContent = isContent
+        ? 'Tamanho do nó de tema = quantidade de conteúdos que o citam. "Financeiro" e "Automação e Tecnologia" concentram quase 70% de todo o catálogo do Condomob.'
+        : "Cada nó é um tema; a espessura da linha mostra quantos conteúdos citam os dois temas ao mesmo tempo. \"Automação e Tecnologia\" + \"Financeiro\" aparecem juntos 14 vezes — o combo mais forte do catálogo.";
+      renderMode();
+    });
+  });
+
+  document.getElementById("recent-toggle").addEventListener("click", function () {
+    recentOnly = !recentOnly;
+    this.classList.toggle("toggle-on", recentOnly);
+    applyContentFilter();
+  });
+
+  document.getElementById("search-input").addEventListener("input", function () {
+    searchQuery = this.value;
+    applyContentFilter();
+  });
+
+  var brands = DATA.matrix.brands;
+  var toolbar = document.getElementById("toolbar");
+  function renderBrandChips() {
+    brands = DATA.matrix.brands;
+    toolbar.querySelectorAll(".chip[data-brand]").forEach(function (c) { c.remove(); });
+    brands.forEach(function (b) {
+      var chip = document.createElement("span");
+      chip.className = "chip" + (brandActive[b] === false ? " off" : "");
+      chip.dataset.brand = b;
+      var dot = document.createElement("span");
+      dot.className = "dot";
+      dot.style.background = brandHex(b);
+      chip.appendChild(dot);
+      chip.appendChild(document.createTextNode(b));
+      chip.addEventListener("click", function () {
+        brandActive[b] = !brandActive[b];
+        chip.classList.toggle("off", !brandActive[b]);
+        applyContentFilter();
+      });
+      toolbar.insertBefore(chip, document.getElementById("reset-btn"));
+    });
+  }
+  renderBrandChips();
+
+  var toolbarFormat = document.getElementById("toolbar-format");
+  var formatOrder = ["video", "short", "reel", "podcast", "post"];
+  formatOrder.forEach(function (f) {
+    var chip = document.createElement("span");
+    chip.className = "chip";
+    chip.dataset.format = f;
+    var path = d3.symbol().type(FORMAT_SYMBOL[f]).size(60)();
+    chip.innerHTML = '<svg width="11" height="11" viewBox="-7 -7 14 14" style="margin-right:3px;vertical-align:-1px"><path d="' + path + '" fill="currentColor"></path></svg>' + FORMAT_LABEL[f];
+    chip.addEventListener("click", function () {
+      formatActive[f] = !formatActive[f];
+      chip.classList.toggle("off", !formatActive[f]);
+      applyContentFilter();
+    });
+    toolbarFormat.appendChild(chip);
+  });
+
+  document.getElementById("reset-btn").addEventListener("click", function () {
+    brands.forEach(function (b) { brandActive[b] = true; });
+    formatOrder.forEach(function (f) { formatActive[f] = true; });
+    toolbar.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("off"); });
+    toolbarFormat.querySelectorAll(".chip").forEach(function (c) { c.classList.remove("off"); });
+    recentOnly = false;
+    document.getElementById("recent-toggle").classList.remove("toggle-on");
+    searchQuery = "";
+    document.getElementById("search-input").value = "";
+    applyContentFilter();
+  });
+
+  // ---------------- shape legend ----------------
+  (function () {
+    var el = document.getElementById("shape-legend");
+    var order = ["video", "short", "reel", "podcast", "post"];
+    var html = "Formato: ";
+    order.forEach(function (f) {
+      var path = d3.symbol().type(FORMAT_SYMBOL[f]).size(f === "video" ? 60 : 80)();
+      html += '<svg width="13" height="13" viewBox="-7 -7 14 14" style="margin-right:3px"><path d="' + path + '" fill="' + cssVar("--text-muted") + '"></path></svg>' + FORMAT_LABEL[f] + "  ";
+    });
+    el.innerHTML = html;
+  })();
+
+  // ---------------- ranking side panel ----------------
+  var rankList = document.getElementById("rank-list");
+  function renderRankList() {
+    rankList.innerHTML = "";
+    DATA.temas.slice().sort(function (a, b) { return b.count - a.count; }).forEach(function (t, i) {
+      var row = document.createElement("div");
+      row.className = "rank-row";
+      row.innerHTML = '<span class="rank-num">' + (i + 1) + '</span>' +
+        '<span class="rank-name">' + t.title + '</span>' +
+        '<span class="rank-count">' + t.count + '</span>';
+      rankList.appendChild(row);
+    });
+  }
+  renderRankList();
+
+  // ---------------- cadence mini charts ----------------
+  function renderCadence() {
+    var el = document.getElementById("cadence-list");
+    el.innerHTML = "";
+    var weeks = DATA.cadence.weeks;
+    var maxVal = 1;
+    Object.keys(DATA.cadence.brands).forEach(function (b) {
+      maxVal = Math.max(maxVal, d3.max(DATA.cadence.brands[b]));
+    });
+    Object.keys(DATA.cadence.brands).forEach(function (b) {
+      var vals = DATA.cadence.brands[b];
+      var total = vals.reduce(function (a, v) { return a + v; }, 0);
+      var wrap = document.createElement("div");
+      wrap.className = "cadence-row";
+      var head = document.createElement("div");
+      head.className = "cadence-head";
+      var dot = document.createElement("span");
+      dot.className = "dot"; dot.style.background = brandHex(b);
+      head.appendChild(dot);
+      head.appendChild(document.createTextNode(b));
+      var n = document.createElement("span"); n.className = "n";
+      n.textContent = total === 0 ? "sem posts" : total + " no período";
+      head.appendChild(n);
+      wrap.appendChild(head);
+
+      var brandContents = DATA.content.filter(function (c) { return c.marca === b; });
+      var lastLine = document.createElement("div");
+      lastLine.className = "cadence-last";
+      if (brandContents.length) {
+        var lastDate = brandContents.reduce(function (max, c) { return c.data > max ? c.data : max; }, brandContents[0].data);
+        var diffDays = Math.round((Date.now() - new Date(lastDate + "T00:00:00").getTime()) / 86400000);
+        var when = diffDays <= 0 ? "hoje" : diffDays === 1 ? "ontem" : "há " + diffDays + " dias";
+        lastLine.textContent = "Último post: " + when + " (" + lastDate.split("-").reverse().join("/") + ")";
+      } else {
+        lastLine.textContent = "Nenhum conteúdo registrado";
+      }
+      wrap.appendChild(lastLine);
+
+      var svgW = 228, svgH = 26, bw = svgW / weeks.length;
+      var barSvg = d3.create("svg").attr("width", svgW).attr("height", svgH);
+      barSvg.selectAll("rect").data(vals).join("rect")
+        .attr("x", function (d, i) { return i * bw + 1; })
+        .attr("width", bw - 2)
+        .attr("y", function (d) { return svgH - (maxVal ? (d / maxVal) * (svgH - 2) : 0) - 1; })
+        .attr("height", function (d) { return maxVal ? (d / maxVal) * (svgH - 2) + (d > 0 ? 1 : 0) : 0; })
+        .attr("rx", 1)
+        .attr("fill", brandHex(b))
+        .attr("opacity", function (d) { return d === 0 ? 0.18 : 0.9; });
+      wrap.appendChild(barSvg.node());
+      el.appendChild(wrap);
+    });
+  }
+  renderCadence();
+
+  // ---------------- Marca x Tema heatmap ----------------
+  function renderHeatmap() {
+    var table = document.getElementById("heatmap-table");
+    table.innerHTML = "";
+    var brands = DATA.matrix.brands;
+    var temas = DATA.matrix.temas;
+    var maxCount = d3.max(DATA.matrix.cells, function (c) { return c.count; });
+    var byKey = {};
+    DATA.matrix.cells.forEach(function (c) { byKey[c.brand + "|" + c.tema] = c.count; });
+
+    var thead = document.createElement("thead");
+    var htr = document.createElement("tr");
+    htr.innerHTML = '<th class="row-h">Marca</th>' + temas.map(function (t) { return "<th>" + t + "</th>"; }).join("");
+    thead.appendChild(htr);
+    table.appendChild(thead);
+
+    var tbody = document.createElement("tbody");
+    brands.forEach(function (b) {
+      var tr = document.createElement("tr");
+      var rowTh = document.createElement("th");
+      rowTh.className = "row-h";
+      rowTh.textContent = b;
+      tr.appendChild(rowTh);
+      temas.forEach(function (t) {
+        var count = byKey[b + "|" + t] || 0;
+        var td = document.createElement("td");
+        td.className = "cell";
+        var alpha = maxCount ? (count / maxCount) * 0.85 : 0;
+        td.style.background = count === 0 ? "transparent" : "rgba(var(--ink-rgb)," + alpha.toFixed(2) + ")";
+        td.style.color = alpha > 0.45 ? cssVar("--page") : cssVar("--text-primary");
+        td.textContent = count === 0 ? "–" : count;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+  }
+  renderHeatmap();
+
+  // ---------------- gaps: temas populares que a marca ainda não cobre ----------------
+  function renderGaps() {
+    var el = document.getElementById("gap-groups");
+    el.innerHTML = "";
+    var byKey = {};
+    DATA.matrix.cells.forEach(function (c) { byKey[c.brand + "|" + c.tema] = c.count; });
+    var temasByPopularity = DATA.temas.slice().sort(function (a, b) { return b.count - a.count; }).map(function (t) { return t.title; });
+    DATA.matrix.brands.forEach(function (b) {
+      var missing = temasByPopularity.filter(function (t) { return !(byKey[b + "|" + t] > 0); }).slice(0, 7);
+      var row = document.createElement("div");
+      row.className = "gap-brand-row";
+      var name = document.createElement("div");
+      name.className = "gap-brand-name";
+      name.textContent = b;
+      row.appendChild(name);
+      var tags = document.createElement("div");
+      tags.className = "gap-tags";
+      if (missing.length === 0) {
+        var ok = document.createElement("span");
+        ok.className = "gap-tag";
+        ok.style.opacity = "0.55";
+        ok.textContent = "Cobre todos os temas populares";
+        tags.appendChild(ok);
+      } else {
+        missing.forEach(function (t) {
+          var tag = document.createElement("span");
+          tag.className = "gap-tag";
+          tag.textContent = t;
+          tags.appendChild(tag);
+        });
+      }
+      row.appendChild(tags);
+      el.appendChild(row);
+    });
+  }
+  renderGaps();
+
+  // ---------------- ritmo de publicação por mês ----------------
+  function renderTrend() {
+    var legendEl = document.getElementById("trend-legend");
+    legendEl.innerHTML = "";
+    var brandsOrder = DATA.matrix.brands;
+    var byMonth = {};
+    DATA.content.forEach(function (c) {
+      var ym = c.data.slice(0, 7);
+      if (!byMonth[ym]) {
+        byMonth[ym] = {};
+        brandsOrder.forEach(function (b) { byMonth[ym][b] = 0; });
+      }
+      byMonth[ym][c.marca] = (byMonth[ym][c.marca] || 0) + 1;
+    });
+    var months = Object.keys(byMonth).sort().slice(-24);
+
+    brandsOrder.forEach(function (b) {
+      var span = document.createElement("span");
+      span.innerHTML = '<span class="dot" style="background:' + brandHex(b) + '"></span>' + b;
+      legendEl.appendChild(span);
+    });
+
+    var svgEl = d3.select("#trend-svg");
+    svgEl.selectAll("*").remove();
+    var container = svgEl.node().parentNode;
+    var W = Math.max(760, container.getBoundingClientRect().width || 900);
+    var H = 150, padB = 18, padT = 6;
+    svgEl.attr("viewBox", "0 0 " + W + " " + H).attr("width", "100%").attr("height", H).style("display", "block");
+
+    var groupW = W / months.length;
+    var barW = Math.max(2, groupW / 3.6 - 1);
+    var maxVal = d3.max(months, function (m) {
+      return d3.max(brandsOrder.map(function (b) { return byMonth[m][b] || 0; }));
+    }) || 1;
+    var yScale = function (v) { return (H - padB - padT) * (v / maxVal); };
+
+    var g = svgEl.append("g");
+    months.forEach(function (m, i) {
+      var x0 = i * groupW;
+      brandsOrder.forEach(function (b, bi) {
+        var v = byMonth[m][b] || 0;
+        var h = yScale(v);
+        g.append("rect")
+          .attr("x", x0 + bi * (barW + 1))
+          .attr("y", H - padB - h)
+          .attr("width", barW)
+          .attr("height", Math.max(h, v > 0 ? 1 : 0))
+          .attr("rx", 1)
+          .attr("fill", brandHex(b))
+          .attr("opacity", v === 0 ? 0.12 : 0.9);
+      });
+      var everyN = Math.max(1, Math.ceil(months.length / 12));
+      if (i % everyN === 0 || i === months.length - 1) {
+        g.append("text")
+          .attr("x", x0 + groupW / 2)
+          .attr("y", H - 4)
+          .attr("text-anchor", "middle")
+          .attr("font-size", "9px")
+          .attr("fill", cssVar("--text-muted"))
+          .text(m.slice(2).replace("-", "/"));
+      }
+    });
+  }
+  renderTrend();
+
+  // ---------------- palavras mais usadas nos títulos ----------------
+  function renderWordTags() {
+    var wtEl = document.getElementById("word-tags");
+    wtEl.innerHTML = "";
+    var stop = ["de","da","do","das","dos","e","a","o","as","os","em","no","na","nos","nas","para",
+      "por","com","que","como","é","um","uma","ao","à","aos","às","sem","mais","já","se","sua","seu",
+      "suas","seus","ou","um","condomínio","condomínios","condominial","app","aplicativo",
+      "condomob","ucondo","townsq","winker","reel","short","post","vídeo","podcast","parte","novo","nova","novas","novos"];
+    DATA.matrix.brands.forEach(function (b) {
+      var lb = b.toLowerCase();
+      if (stop.indexOf(lb) === -1) stop.push(lb);
+    });
+    var freq = {};
+    DATA.content.forEach(function (c) {
+      c.title.toLowerCase()
+        .replace(/[.,!?:;"'()\/]/g, " ")
+        .split(/\s+/)
+        .forEach(function (w) {
+          w = w.trim();
+          if (!w || w.length < 3) return;
+          if (/^[0-9]+$/.test(w)) return;
+          if (stop.indexOf(w) !== -1) return;
+          freq[w] = (freq[w] || 0) + 1;
+        });
+    });
+    var top = Object.keys(freq).map(function (w) { return { w: w, n: freq[w] }; })
+      .filter(function (d) { return d.n > 1; })
+      .sort(function (a, b) { return b.n - a.n; }).slice(0, 20);
+    var el = document.getElementById("word-tags");
+    top.forEach(function (d) {
+      var tag = document.createElement("span");
+      tag.className = "word-tag";
+      tag.innerHTML = d.w + '<span class="n">' + d.n + '</span>';
+      el.appendChild(tag);
+    });
+  }
+  renderWordTags();
+
+  // ---------------- table view (accessibility fallback) ----------------
+  var tvBody = document.getElementById("tv-body");
+  function renderTableView() {
+    tvBody.innerHTML = "";
+    DATA.content.slice().sort(function (a, b) { return a.data < b.data ? 1 : -1; }).forEach(function (c) {
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + c.marca + "</td><td>" + c.title + "</td><td>" + c.data + "</td><td>" + (FORMAT_LABEL[c.formato] || c.formato) + "</td><td>" + c.temas.join(", ") + "</td>";
+      tvBody.appendChild(tr);
+    });
+  }
+  renderTableView();
+
+  function updateCatalogCounts() {
+    var sub = document.querySelector(".subtitle");
+    if (sub) sub.textContent = DATA.content.length + " vídeos, Shorts, Reels, posts e podcasts de uCondo, TownSq e Condomob — mais a Winker e qualquer marca importada, como referência de concorrência — conectados a " + DATA.temas.length + " temas. Alterne a visão, filtre por marca ou formato, busque por título ou isole publicações recentes. Passe o mouse num nó para detalhes; clique num conteúdo para abrir o link original.";
+    var foot = document.querySelector(".credits");
+    if (foot) foot.textContent = "Fonte: planilha de acompanhamento de conteúdo (uCondo, TownSq, Condomob) + coleta de concorrência (Winker) e itens importados · gerado a partir de " + DATA.content.length + " itens e " + DATA.edges.length + " conexões de tema";
+    var wsub = document.querySelector("#word-tags").parentNode.querySelector(".hm-sub");
+    if (wsub) wsub.textContent = "As 20 palavras que mais aparecem nos " + DATA.content.length + " títulos do catálogo, sem contar palavras comuns.";
+    var tsum = document.querySelector(".table-view summary");
+    if (tsum) tsum.textContent = "Ver como tabela (todos os " + DATA.content.length + " conteúdos)";
+  }
+
+  function refreshAfterImport() {
+    DATA.matrix.brands.forEach(function (b) { if (brandActive[b] === undefined) brandActive[b] = true; });
+    renderBrandChips();
+    renderRankList();
+    renderCadence();
+    renderHeatmap();
+    renderGaps();
+    renderTrend();
+    renderWordTags();
+    renderTableView();
+    updateCatalogCounts();
+    renderMode();
+  }
+
+  // ---------------- importar conteúdo (.md / .zip de .md) ----------------
+  (function () {
+    var TEMA_KEYWORDS = {
+      "Inadimplência": ["inadimpl", "atraso", "atrasad", "devedor", "divida"],
+      "Automação e Tecnologia": ["automa", "tecnologia", "aplicativo", " app ", "inteligencia artificial", " ia ", "digital", "sistema", "plataforma", "integra"],
+      "Jurídico": ["juridic", " lei ", "legal", "tribunal", "stj", "direito", "reforma tributaria", "responsabilidade", "processo"],
+      "Síndico e Gestão": ["sindico", "gestao", "administradora", "gestor"],
+      "Financeiro": ["financeiro", "boleto", "fluxo de caixa", "orcamento", "prestacao de contas", "taxa de condominio", "cobranca"],
+      "Assembleia": ["assembleia", "enquete", "votacao", " voto "],
+      "Portaria e Segurança": ["portaria", "seguranca", "acesso", "porteiro", "camera", "reconhecimento facial", "controle de acesso"],
+      "Transparência": ["transparencia"],
+      "Conselho Fiscal": ["conselho fiscal"],
+      "Comunicação": ["comunicacao", "whatsapp", "aviso", "mural"],
+      "Custos e Taxas": ["custo", "nfs-e", "nfse", "imposto", "tributari", "taxa"],
+      "Trabalho e Funcionários": ["funcionario", "trabalho", "empregad", "feriado"],
+      "Manutenção e Patrimônio": ["manutencao", "patrimonio", "consumo"],
+      "Eventos e Institucional": ["evento", "summit", "feira", "festa", "institucional", "stand", " live "]
+    };
+    var KNOWN_BRAND_KEYWORDS = { winker: "Winker", ucondo: "uCondo", townsq: "TownSq", condomob: "Condomob" };
+    var FORMATO_OPTIONS = ["video", "short", "reel", "podcast", "post"];
+
+    // Saving/removing goes through a login-protected path. The Worker
+    // checks the username/password against its own secrets and, if they
+    // match, sets an HttpOnly session cookie — the browser sends it back
+    // automatically on later requests, so the page itself never stores the
+    // password anywhere.
+    var ADMIN_API = "/api/admin/imports";
+    var LOGIN_API = "/api/login";
+
+    function showLoginForm(message) {
+      footerNote.innerHTML = "";
+      if (message) {
+        var msg = document.createElement("div");
+        msg.className = "import-login-msg";
+        msg.textContent = message;
+        footerNote.appendChild(msg);
+      }
+      var form = document.createElement("div");
+      form.className = "import-login-form";
+
+      var userInput = document.createElement("input");
+      userInput.type = "text";
+      userInput.placeholder = "Usuário";
+      userInput.autocomplete = "username";
+      userInput.className = "import-login-input";
+
+      var passInput = document.createElement("input");
+      passInput.type = "password";
+      passInput.placeholder = "Senha";
+      passInput.autocomplete = "current-password";
+      passInput.className = "import-login-input";
+
+      var submitBtn = document.createElement("button");
+      submitBtn.type = "button";
+      submitBtn.className = "import-login-submit";
+      submitBtn.textContent = "Entrar";
+
+      form.appendChild(userInput);
+      form.appendChild(passInput);
+      form.appendChild(submitBtn);
+      footerNote.appendChild(form);
+      userInput.focus();
+
+      function doLogin() {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Entrando…";
+        fetch(LOGIN_API, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: userInput.value, password: passInput.value })
+        }).then(function (res) {
+          if (!res.ok) throw new Error("invalid-credentials");
+          return res.json();
+        }).then(function () {
+          // Logged in — re-run the import now that the session cookie is set.
+          confirmImport();
+        }).catch(function () {
+          showLoginForm("Usuário ou senha incorretos. Tente de novo.");
+        });
+      }
+
+      submitBtn.addEventListener("click", doLogin);
+      passInput.addEventListener("keydown", function (e) { if (e.key === "Enter") doLogin(); });
+      userInput.addEventListener("keydown", function (e) { if (e.key === "Enter") passInput.focus(); });
+    }
+
+    function stripDiacritics(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+    function normalizeText(s) { return stripDiacritics(String(s || "").toLowerCase()); }
+
+    function suggestTemas(text) {
+      var norm = " " + normalizeText(text) + " ";
+      var hits = [];
+      Object.keys(TEMA_KEYWORDS).forEach(function (tema) {
+        var kws = TEMA_KEYWORDS[tema];
+        for (var i = 0; i < kws.length; i++) {
+          if (norm.indexOf(kws[i]) !== -1) { hits.push(tema); return; }
+        }
+      });
+      return hits;
+    }
+
+    function parseFrontmatter(text) {
+      var fm = {};
+      var m = text.match(/^---\s*\n([\s\S]*?)\n---/);
+      if (m) {
+        m[1].split("\n").forEach(function (line) {
+          var kv = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
+          if (kv) fm[kv[1].trim()] = kv[2].trim().replace(/^"(.*)"$/, "$1");
+        });
+      }
+      return fm;
+    }
+
+    function parseMarkdownNote(text, filename) {
+      var fm = parseFrontmatter(text);
+      var draft = { title: "", marca: "", plataforma: "", formato: "post", data: "", link: "", temas: [] };
+
+      draft.title = fm.title || filename.replace(/\.md$/i, "").replace(/[-_]/g, " ");
+
+      if (fm.published && /^\d{4}-\d{2}-\d{2}/.test(fm.published)) {
+        draft.data = fm.published.slice(0, 10);
+      } else {
+        var dm = text.match(/(\d{4}-\d{2}-\d{2})/);
+        if (dm) draft.data = dm[1];
+      }
+
+      var urlMatch = text.match(/\*\*URL:\*\*\s*(\S+)/i) || text.match(/(https?:\/\/\S+)/);
+      if (urlMatch) draft.link = urlMatch[1].replace(/[)\].,]+$/, "");
+
+      var formatMatch = text.match(/\*\*Formato:\*\*\s*([^\n]+)/i);
+      var formatText = normalizeText(formatMatch ? formatMatch[1] : text);
+      if (formatText.indexOf("reel") !== -1) draft.formato = "reel";
+      else if (formatText.indexOf("short") !== -1) draft.formato = "short";
+      else if (formatText.indexOf("podcast") !== -1) draft.formato = "podcast";
+      else if (formatMatch && formatText.indexOf("video") !== -1) draft.formato = "video";
+      else draft.formato = "post";
+
+      var lowerAll = (draft.link + " " + text).toLowerCase();
+      if (lowerAll.indexOf("instagram") !== -1) {
+        draft.plataforma = draft.formato === "reel" ? "Instagram Reels" : "Instagram";
+      } else if (lowerAll.indexOf("youtube") !== -1) {
+        draft.plataforma = draft.formato === "short" ? "YouTube Shorts" : "YouTube";
+      } else {
+        draft.plataforma = "Web";
+      }
+
+      var normAll = normalizeText((fm.title || "") + " " + text);
+      var brandGuess = "";
+      Object.keys(KNOWN_BRAND_KEYWORDS).forEach(function (kw) {
+        if (normAll.indexOf(kw) !== -1) brandGuess = KNOWN_BRAND_KEYWORDS[kw];
+      });
+      if (!brandGuess && fm.title) {
+        var sep = fm.title.split(/\s[-—]\s/);
+        if (sep.length > 1 && sep[0].trim().length <= 24) brandGuess = sep[0].trim();
+      }
+      draft.marca = brandGuess;
+
+      draft.temas = suggestTemas((fm.title || "") + " " + (fm.description || "") + " " + text);
+      return draft;
+    }
+
+    var backdrop = document.getElementById("import-backdrop");
+    var bodyEl = document.getElementById("import-body");
+    var footerEl = document.getElementById("import-footer");
+    var footerNote = document.getElementById("import-footer-note");
+    var fileInput = null;
+    var drafts = [];
+
+    function openModal() {
+      drafts = [];
+      renderDropzone();
+      backdrop.hidden = false;
+      footerEl.hidden = true;
+    }
+    function closeModal() { backdrop.hidden = true; }
+
+    document.getElementById("import-open-btn").addEventListener("click", openModal);
+    document.getElementById("import-close-btn").addEventListener("click", closeModal);
+    document.getElementById("import-cancel-btn").addEventListener("click", closeModal);
+    backdrop.addEventListener("click", function (e) { if (e.target === backdrop) closeModal(); });
+
+    function renderDropzone(errorMsg) {
+      bodyEl.innerHTML = "";
+      footerEl.hidden = true;
+      var sub = document.createElement("p");
+      sub.className = "import-sub";
+      sub.textContent = "Envie arquivos .md (um por conteúdo) ou um .zip com vários .md, como os exportados do Obsidian. Depois de enviar, você revisa marca, formato e temas antes de confirmar.";
+      bodyEl.appendChild(sub);
+
+      var drop = document.createElement("div");
+      drop.className = "import-drop";
+      drop.innerHTML = '<strong>Clique para selecionar</strong> ou arraste aqui arquivos .md ou .zip<input type="file" accept=".md,.zip" multiple id="import-file-input">';
+      bodyEl.appendChild(drop);
+
+      fileInput = drop.querySelector("#import-file-input");
+      drop.addEventListener("click", function () { fileInput.click(); });
+      fileInput.addEventListener("change", function () { handleFiles(fileInput.files); });
+      drop.addEventListener("dragover", function (e) { e.preventDefault(); drop.classList.add("drag-over"); });
+      drop.addEventListener("dragleave", function () { drop.classList.remove("drag-over"); });
+      drop.addEventListener("drop", function (e) {
+        e.preventDefault();
+        drop.classList.remove("drag-over");
+        handleFiles(e.dataTransfer.files);
+      });
+
+      if (errorMsg) {
+        var err = document.createElement("div");
+        err.className = "import-error";
+        err.textContent = errorMsg;
+        bodyEl.appendChild(err);
+      }
+    }
+
+    function handleFiles(fileList) {
+      var files = Array.prototype.slice.call(fileList || []);
+      if (!files.length) return;
+      bodyEl.innerHTML = "";
+      var status = document.createElement("div");
+      status.className = "import-status";
+      status.textContent = "Lendo " + files.length + " arquivo(s)…";
+      bodyEl.appendChild(status);
+
+      var notes = []; // {text, filename}
+      var tasks = files.map(function (file) {
+        var name = file.name || "arquivo";
+        if (/\.zip$/i.test(name)) {
+          if (typeof JSZip === "undefined") {
+            return Promise.resolve().then(function () {
+              throw new Error("Não foi possível ler .zip (biblioteca indisponível). Extraia o zip e envie os .md soltos.");
+            });
+          }
+          return JSZip.loadAsync(file).then(function (zip) {
+            var entries = Object.keys(zip.files).filter(function (p) { return /\.md$/i.test(p) && !zip.files[p].dir; });
+            return Promise.all(entries.map(function (p) {
+              return zip.files[p].async("string").then(function (text) {
+                notes.push({ text: text, filename: p.split("/").pop() });
+              });
+            }));
+          });
+        }
+        if (/\.md$/i.test(name)) {
+          return file.text().then(function (text) { notes.push({ text: text, filename: name }); });
+        }
+        return Promise.resolve();
+      });
+
+      Promise.all(tasks).then(function () {
+        if (!notes.length) {
+          renderDropzone("Nenhum arquivo .md encontrado nos arquivos enviados.");
+          return;
+        }
+        drafts = notes.map(function (n) { return parseMarkdownNote(n.text, n.filename); });
+        renderReview();
+      }).catch(function (e) {
+        renderDropzone("Erro ao ler os arquivos: " + (e && e.message ? e.message : e));
+      });
+    }
+
+    function linkExists(link) {
+      if (!link) return false;
+      return DATA.content.some(function (c) { return c.link && c.link === link; });
+    }
+
+    function renderReview() {
+      bodyEl.innerHTML = "";
+      var sub = document.createElement("p");
+      sub.className = "import-sub";
+      sub.textContent = drafts.length + " item(ns) encontrados. Confira marca, formato, data e temas — já vieram com sugestões automáticas, mas ajuste o que precisar antes de importar.";
+      bodyEl.appendChild(sub);
+
+      var brandList = document.createElement("datalist");
+      brandList.id = "import-brand-datalist";
+      DATA.matrix.brands.forEach(function (b) {
+        var opt = document.createElement("option");
+        opt.value = b;
+        brandList.appendChild(opt);
+      });
+      bodyEl.appendChild(brandList);
+
+      drafts.forEach(function (draft, idx) {
+        var isDup = linkExists(draft.link);
+        var row = document.createElement("div");
+        row.className = "import-row" + (isDup ? " import-dup" : "");
+        row.dataset.idx = idx;
+
+        var top = document.createElement("div");
+        top.className = "import-row-top";
+        var check = document.createElement("input");
+        check.type = "checkbox";
+        check.className = "import-include";
+        check.checked = !isDup;
+        top.appendChild(check);
+
+        var titleWrap = document.createElement("div");
+        titleWrap.className = "import-row-title";
+        var titleInput = document.createElement("input");
+        titleInput.type = "text";
+        titleInput.className = "import-title-input";
+        titleInput.value = draft.title;
+        titleWrap.appendChild(titleInput);
+        if (isDup) {
+          var badge = document.createElement("span");
+          badge.className = "import-badge";
+          badge.textContent = "link já no catálogo";
+          titleWrap.appendChild(badge);
+        }
+        top.appendChild(titleWrap);
+        row.appendChild(top);
+
+        var fields = document.createElement("div");
+        fields.className = "import-fields";
+
+        var marcaField = document.createElement("div");
+        marcaField.innerHTML = '<label>Marca</label>';
+        var marcaInput = document.createElement("input");
+        marcaInput.type = "text";
+        marcaInput.className = "import-marca-input";
+        marcaInput.setAttribute("list", "import-brand-datalist");
+        marcaInput.value = draft.marca;
+        marcaInput.placeholder = "ex.: Winker";
+        marcaField.appendChild(marcaInput);
+        fields.appendChild(marcaField);
+
+        var formatoField = document.createElement("div");
+        formatoField.innerHTML = '<label>Formato</label>';
+        var formatoSelect = document.createElement("select");
+        formatoSelect.className = "import-formato-select";
+        FORMATO_OPTIONS.forEach(function (f) {
+          var opt = document.createElement("option");
+          opt.value = f;
+          opt.textContent = FORMAT_LABEL[f] || f;
+          if (f === draft.formato) opt.selected = true;
+          formatoSelect.appendChild(opt);
+        });
+        formatoField.appendChild(formatoSelect);
+        fields.appendChild(formatoField);
+
+        var dataField = document.createElement("div");
+        dataField.innerHTML = '<label>Data</label>';
+        var dataInput = document.createElement("input");
+        dataInput.type = "date";
+        dataInput.className = "import-data-input";
+        dataInput.value = draft.data || "";
+        dataField.appendChild(dataInput);
+        fields.appendChild(dataField);
+
+        var linkField = document.createElement("div");
+        linkField.innerHTML = '<label>Link</label>';
+        var linkInput = document.createElement("input");
+        linkInput.type = "text";
+        linkInput.className = "import-link-input";
+        linkInput.value = draft.link || "";
+        linkField.appendChild(linkInput);
+        fields.appendChild(linkField);
+
+        row.appendChild(fields);
+
+        var temasWrap = document.createElement("div");
+        temasWrap.className = "import-temas";
+        temasWrap.innerHTML = '<label class="import-temas-label">Temas</label>';
+        var grid = document.createElement("div");
+        grid.className = "import-tema-grid";
+        DATA.matrix.temas.forEach(function (t) {
+          var isOn = draft.temas.indexOf(t) !== -1;
+          var lbl = document.createElement("label");
+          lbl.className = "import-tema-chip" + (isOn ? " on" : "");
+          var cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.value = t;
+          cb.checked = isOn;
+          cb.addEventListener("change", function () { lbl.classList.toggle("on", cb.checked); });
+          lbl.appendChild(cb);
+          lbl.appendChild(document.createTextNode(t));
+          grid.appendChild(lbl);
+        });
+        var newTemaInput = document.createElement("input");
+        newTemaInput.type = "text";
+        newTemaInput.className = "import-new-tema";
+        newTemaInput.placeholder = "+ novo tema";
+        grid.appendChild(newTemaInput);
+        temasWrap.appendChild(grid);
+        row.appendChild(temasWrap);
+
+        bodyEl.appendChild(row);
+      });
+
+      footerEl.hidden = false;
+      footerNote.textContent = drafts.length + " item(ns) prontos para revisão";
+      document.getElementById("import-confirm-btn").onclick = confirmImport;
+    }
+
+    function nextContentId() {
+      var max = -1;
+      DATA.content.forEach(function (c) {
+        var m = /^c(\d+)$/.exec(c.id);
+        if (m) max = Math.max(max, parseInt(m[1], 10));
+      });
+      return max + 1;
+    }
+
+    function confirmImport() {
+      var rows = bodyEl.querySelectorAll(".import-row");
+      var toImport = [];
+      var nextId = nextContentId();
+      rows.forEach(function (row) {
+        var idx = parseInt(row.dataset.idx, 10);
+        if (!row.querySelector(".import-include").checked) return;
+        var title = row.querySelector(".import-title-input").value.trim();
+        var marca = row.querySelector(".import-marca-input").value.trim();
+        var formato = row.querySelector(".import-formato-select").value;
+        var data = row.querySelector(".import-data-input").value;
+        var link = row.querySelector(".import-link-input").value.trim();
+        var temas = Array.prototype.slice.call(row.querySelectorAll('.import-tema-chip input[type=checkbox]:checked'))
+          .map(function (cb) { return cb.value; });
+        var newTemaVal = row.querySelector(".import-new-tema").value.trim();
+        if (newTemaVal) {
+          newTemaVal.split(",").forEach(function (t) {
+            t = t.trim();
+            if (t && temas.indexOf(t) === -1) temas.push(t);
+          });
+        }
+        if (!title || !marca || !data || !temas.length) return;
+        var item = {
+          id: "c" + (nextId++),
+          type: "content",
+          title: title,
+          marca: marca,
+          plataforma: drafts[idx] ? drafts[idx].plataforma : "Web",
+          formato: formato,
+          data: data,
+          link: link,
+          temas: temas
+        };
+        toImport.push(item);
+      });
+
+      if (!toImport.length) {
+        footerNote.textContent = "Nenhum item válido selecionado (preencha ao menos título, marca, data e 1 tema).";
+        return;
+      }
+
+      var confirmBtn = document.getElementById("import-confirm-btn");
+      confirmBtn.disabled = true;
+      footerNote.textContent = "Importando " + toImport.length + " item(ns)…";
+
+      fetch(ADMIN_API, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: toImport })
+      }).then(function (res) {
+        if (res.status === 401) throw new Error("needs-login");
+        return res.json().then(function (data) {
+          if (!res.ok) throw new Error((data && data.error) || ("status " + res.status));
+          return data;
+        });
+      }).then(function () {
+        toImport.forEach(function (item) { DATA.content.push(item); });
+        recomputeDerived(DATA);
+        refreshAfterImport();
+        closeModal();
+      }).catch(function (e) {
+        confirmBtn.disabled = false;
+        if (e && e.message === "needs-login") {
+          // Don't apply the items locally yet — once the login form below
+          // succeeds, confirmImport() runs again and this time saves (and
+          // applies) for real, so nothing ends up applied twice.
+          showLoginForm("Para salvar de verdade, entre com seu usuário e senha:");
+        } else {
+          // Can't log our way out of a network/server error — apply
+          // locally so the work isn't lost, but warn it won't survive a
+          // reload.
+          toImport.forEach(function (item) { DATA.content.push(item); });
+          recomputeDerived(DATA);
+          refreshAfterImport();
+          footerNote.textContent = "Não foi possível salvar no servidor (" + (e && e.message ? e.message : "erro") + "). " +
+            toImport.length + " item(ns) aplicados aqui, mas só ficam visíveis nesta visualização. Feche para continuar.";
+        }
+        console.warn("Import save failed:", e);
+      });
+    }
+  })();
+
+  renderMode();
+
+  window.addEventListener("resize", function () {
+    if (currentMode !== "content" && currentMode !== "temas") return;
+    measure();
+    if (!simulation) return;
+    simulation.force("center", d3.forceCenter(width / 2, height / 2));
+    if (simulation.force("x")) simulation.force("x", d3.forceX(width / 2).strength(currentMode === "content" ? 0.03 : 0.04));
+    if (simulation.force("y")) simulation.force("y", d3.forceY(height / 2).strength(currentMode === "content" ? 0.03 : 0.04));
+    simulation.alpha(0.3).restart();
+  });
+})();
+</script>
+
+</body></html>
