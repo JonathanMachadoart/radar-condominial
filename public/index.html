@@ -4,13 +4,13 @@
 <style>
   .viz-root {
     color-scheme: light;
-    --page:           #f5f4fb;
+    --page:           #eef1f6;
     --surface-1:      #ffffff;
-    --text-primary:   #181824;
-    --text-secondary: #6e6c85;
-    --text-muted:     #9794ab;
-    --gridline:       #ece9f8;
-    --border:         rgba(43,27,107,0.10);
+    --text-primary:   #111827;
+    --text-secondary: #4b5563;
+    --text-muted:     #9aa1ad;
+    --gridline:       #e5e7eb;
+    --border:         rgba(17,24,39,0.08);
     --series-ucondo:  #7b68ee;
     --series-townsq:  #fc6d2d;
     --series-condomob:#12c2a9;
@@ -19,11 +19,19 @@
     --hub-stroke:     #7b68ee;
     --hub-text:       #2b1b6b;
     --chip-bg:        #ffffff;
-    --ink-rgb:         24,24,36;
-    --accent-active:  #6647f0;
-    --accent-soft:    rgba(123,104,238,0.10);
-    --shadow-card:    0 1px 2px rgba(43,27,107,.05), 0 10px 26px rgba(43,27,107,.08);
+    --ink-rgb:         17,24,39;
+    --accent-active:  #2f6fed;
+    --accent-soft:    rgba(47,111,237,0.10);
+    --shadow-card:    0 1px 2px rgba(15,23,42,.04), 0 10px 24px rgba(15,23,42,.06);
     --hero-grad:      linear-gradient(135deg,#1c1140 0%,#3b1f8f 35%,#6647f0 68%,#8b6bf0 100%);
+    --hero-bg:        transparent;
+    --hero-title-color: #111827;
+    --hero-subtitle-color: #4b5563;
+    --eyebrow-bg:     rgba(47,111,237,0.08);
+    --eyebrow-border: rgba(47,111,237,0.22);
+    --eyebrow-color:  #2f6fed;
+    --hero-blob1:     transparent;
+    --hero-blob2:     transparent;
     --warn-bg:        rgba(252,109,45,.10);
     --warn-text:      #c2550f;
     --warn-border:    rgba(252,109,45,.28);
@@ -51,6 +59,14 @@
       --accent-soft:    rgba(159,143,239,0.14);
       --shadow-card:    0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.4);
       --hero-grad:      linear-gradient(135deg,#0f0a26 0%,#271457 35%,#4a2cc4 68%,#6647f0 100%);
+      --hero-bg:        var(--hero-grad);
+      --hero-title-color: #ffffff;
+      --hero-subtitle-color: rgba(255,255,255,.80);
+      --eyebrow-bg:     rgba(255,255,255,.12);
+      --eyebrow-border: rgba(255,255,255,.22);
+      --eyebrow-color:  #e3defe;
+      --hero-blob1:     radial-gradient(circle, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 70%);
+      --hero-blob2:     radial-gradient(circle, rgba(123,104,238,.45) 0%, rgba(123,104,238,0) 70%);
       --warn-bg:        rgba(255,145,89,.16);
       --warn-text:      #ff9159;
       --warn-border:    rgba(255,145,89,.35);
@@ -78,6 +94,14 @@
     --accent-soft:    rgba(159,143,239,0.14);
     --shadow-card:    0 1px 2px rgba(0,0,0,.35), 0 10px 26px rgba(0,0,0,.4);
     --hero-grad:      linear-gradient(135deg,#0f0a26 0%,#271457 35%,#4a2cc4 68%,#6647f0 100%);
+    --hero-bg:        var(--hero-grad);
+    --hero-title-color: #ffffff;
+    --hero-subtitle-color: rgba(255,255,255,.80);
+    --eyebrow-bg:     rgba(255,255,255,.12);
+    --eyebrow-border: rgba(255,255,255,.22);
+    --eyebrow-color:  #e3defe;
+    --hero-blob1:     radial-gradient(circle, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 70%);
+    --hero-blob2:     radial-gradient(circle, rgba(123,104,238,.45) 0%, rgba(123,104,238,0) 70%);
     --warn-bg:        rgba(255,145,89,.16);
     --warn-text:      #ff9159;
     --warn-border:    rgba(255,145,89,.35);
@@ -95,10 +119,31 @@
   }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
 
+  html { scroll-behavior: smooth; }
+  .app-shell { display: flex; align-items: flex-start; background: var(--page); min-height: 100vh; }
+  .app-main { flex: 1 1 auto; min-width: 0; }
+  .sidebar {
+    flex: none; width: 232px; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    background: var(--surface-1); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; padding: 20px 16px 16px;
+  }
+  @media (max-width: 900px) { .sidebar { display: none; } }
+  .sidebar-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px; color: var(--text-primary); margin-bottom: 20px; }
+  .sidebar-menu-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin: 4px 8px 8px; }
+  .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+  .sidebar-nav a {
+    display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px;
+    color: var(--text-secondary); font-size: 13.5px; font-weight: 600; text-decoration: none;
+    transition: background .15s ease, color .15s ease;
+  }
+  .sidebar-nav a:hover { background: var(--accent-soft); color: var(--text-primary); }
+  .sidebar-nav a.active { background: var(--accent-active); color: #ffffff; }
+  .sidebar-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); }
+
   .hero {
     position: relative;
     overflow: hidden;
-    background: var(--hero-grad);
+    background: var(--hero-bg);
     border-radius: 0 0 28px 28px;
     padding: 26px 0 32px;
     margin-bottom: 18px;
@@ -109,7 +154,7 @@
     top: -130px; right: -70px;
     width: 360px; height: 360px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255,255,255,.22) 0%, rgba(255,255,255,0) 70%);
+    background: var(--hero-blob1);
     pointer-events: none;
   }
   .hero::after {
@@ -118,7 +163,7 @@
     bottom: -150px; left: -70px;
     width: 320px; height: 320px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(123,104,238,.45) 0%, rgba(123,104,238,0) 70%);
+    background: var(--hero-blob2);
     pointer-events: none;
   }
   .hero-inner { position: relative; max-width: 1180px; margin: 0 auto; padding: 0 20px; }
@@ -130,9 +175,9 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: #e3defe;
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.22);
+    color: var(--eyebrow-color);
+    background: var(--eyebrow-bg);
+    border: 1px solid var(--eyebrow-border);
     padding: 4px 11px;
     border-radius: 999px;
     margin-bottom: 12px;
@@ -143,11 +188,11 @@
     font-weight: 800;
     margin: 0 0 7px;
     letter-spacing: -0.3px;
-    color: #ffffff;
+    color: var(--hero-title-color);
   }
   .subtitle {
     font-size: 13px;
-    color: rgba(255,255,255,.80);
+    color: var(--hero-subtitle-color);
     margin: 0;
     max-width: 760px;
     line-height: 1.55;
@@ -594,6 +639,24 @@
 </style>
 
 <div class="viz-root">
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="14" fill="var(--accent-active)"/><circle cx="14" cy="14" r="8.5" fill="none" stroke="#fff" stroke-width="1.6" opacity=".55"/><circle cx="14" cy="14" r="3.2" fill="#fff"/></svg>
+      <span>Radar Condominial</span>
+    </div>
+    <div class="sidebar-menu-label">Menu</div>
+    <nav class="sidebar-nav" id="sidebar-nav">
+      <a href="#section-graph">Visão geral</a>
+      <a href="#section-cobertura">Cobertura</a>
+      <a href="#section-oportunidades">Oportunidades</a>
+      <a href="#section-calendario">Calendário</a>
+      <a href="#section-ritmo">Tendências</a>
+      <a href="#section-tabela">Tabela completa</a>
+    </nav>
+    <div class="sidebar-footer" id="sidebar-auth-status"></div>
+  </aside>
+  <div class="app-main">
   <div class="hero">
     <div class="hero-inner">
       <header>
@@ -630,7 +693,7 @@
       <!-- format chips injected by JS -->
     </div>
 
-    <div class="layout">
+    <div class="layout" id="section-graph">
       <div class="chart-card">
         <svg id="graph-svg"></svg>
         <div class="zoom-controls" id="zoom-controls">
@@ -652,7 +715,7 @@
       </div>
     </div>
 
-    <div class="heatmap-card">
+    <div class="heatmap-card" id="section-cobertura">
       <h2>Cobertura por marca × tema</h2>
       <p class="hm-sub">Quantidade de conteúdos de cada marca em cada tema — mostra rapidamente onde cada uma concentra esforço e onde há espaço em branco.</p>
       <div class="hm-scroll">
@@ -660,19 +723,19 @@
       </div>
     </div>
 
-    <div class="heatmap-card">
+    <div class="heatmap-card" id="section-oportunidades">
       <h2>Oportunidades por marca</h2>
       <p class="hm-sub">Temas mais populares do catálogo (por volume total de conteúdo) que cada marca ainda não cobriu nenhuma vez.</p>
       <div class="gap-groups" id="gap-groups"></div>
     </div>
 
-    <div class="heatmap-card">
+    <div class="heatmap-card" id="section-calendario">
       <h2>Calendário de conteúdo sugerido (semana)</h2>
       <p class="hm-sub">Uma pauta por dia útil, calculada a partir do que os concorrentes estão publicando: dias "Em alta" seguem temas com bastante atividade recente no mercado; dias "Oportunidade" miram temas relevantes que ninguém postou nos últimos 30 dias — espaço livre pra ocupar primeiro.</p>
       <div class="cal-grid" id="calendar-days"></div>
     </div>
 
-    <div class="heatmap-card">
+    <div class="heatmap-card" id="section-ritmo">
       <h2>Ritmo de publicação por mês</h2>
       <p class="hm-sub">Conteúdos publicados por mês, por marca, nos últimos meses com atividade registrada.</p>
       <div class="trend-legend" id="trend-legend"></div>
@@ -685,7 +748,7 @@
       <div class="word-tags" id="word-tags"></div>
     </div>
 
-    <details class="table-view">
+    <details class="table-view" id="section-tabela">
       <summary>Ver como tabela (todos os 120 conteúdos)</summary>
       <div class="tv-scroll">
         <table class="tv">
@@ -697,6 +760,8 @@
 
     <footer class="credits">Fonte: planilha de acompanhamento de conteúdo (uCondo, TownSq, Condomob) + coleta de concorrência (Winker) · gerado a partir de 120 itens e 169 conexões de tema</footer>
   </div>
+  </div>
+</div>
 
   <div class="import-backdrop" id="import-backdrop" hidden>
     <div class="import-modal" role="dialog" aria-modal="true" aria-label="Importar conteúdo">
@@ -1754,8 +1819,11 @@
   var loginSubmitBtn = document.getElementById("login-submit-btn");
   var loginOnSuccess = null;
 
-  function renderAuthStatus() {
-    authStatusEl.innerHTML = "";
+  var sidebarAuthEl = document.getElementById("sidebar-auth-status");
+
+  function buildAuthInto(container) {
+    if (!container) return;
+    container.innerHTML = "";
     if (AUTH_STATE.username) {
       var who = document.createElement("span");
       who.textContent = "Logado como " + AUTH_STATE.username + " · ";
@@ -1769,16 +1837,21 @@
           renderAuthStatus();
         });
       });
-      authStatusEl.appendChild(who);
-      authStatusEl.appendChild(logoutBtn);
+      container.appendChild(who);
+      container.appendChild(logoutBtn);
     } else {
       var enterBtn = document.createElement("button");
       enterBtn.type = "button";
       enterBtn.className = "auth-enter-btn";
       enterBtn.textContent = "Entrar";
       enterBtn.addEventListener("click", function () { openLoginModal(); });
-      authStatusEl.appendChild(enterBtn);
+      container.appendChild(enterBtn);
     }
+  }
+
+  function renderAuthStatus() {
+    buildAuthInto(authStatusEl);
+    buildAuthInto(sidebarAuthEl);
   }
 
   function checkAuthStatus() {
@@ -1835,6 +1908,25 @@
 
   renderAuthStatus();
   checkAuthStatus();
+
+  // ---------------- sidebar: scrollspy ----------------
+  (function () {
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll("#sidebar-nav a"));
+    if (!navLinks.length || !("IntersectionObserver" in window)) return;
+    var targets = navLinks.map(function (a) {
+      return document.getElementById(a.getAttribute("href").slice(1));
+    });
+    function setActive(id) {
+      navLinks.forEach(function (a) {
+        a.classList.toggle("active", a.getAttribute("href") === "#" + id);
+      });
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      var visible = entries.filter(function (e) { return e.isIntersecting; });
+      if (visible.length) setActive(visible[0].target.id);
+    }, { rootMargin: "-10% 0px -70% 0px", threshold: 0 });
+    targets.forEach(function (el) { if (el) observer.observe(el); });
+  })();
 
   // ---------------- importar conteúdo (.md / .zip de .md) ----------------
   (function () {
