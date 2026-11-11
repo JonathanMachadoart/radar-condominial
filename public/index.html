@@ -118,6 +118,7 @@
     padding: 0 0 32px;
   }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+  .graph-only-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 
   html { scroll-behavior: smooth; }
   .app-shell { display: flex; align-items: flex-start; background: var(--page); min-height: 100vh; }
@@ -669,12 +670,14 @@
   <div class="wrap">
 
     <div class="toolbar" id="toolbar-view">
-      <span class="label">Visão</span>
-      <span class="chip toggle-on" data-view="content">Conteúdo → Tema</span>
-      <span class="chip" data-view="temas">Temas relacionados entre si</span>
-      <span class="chip" id="recent-toggle">Só últimos 14 dias</span>
-      <input class="search-input" id="search-input" type="text" placeholder="Buscar por título…">
-      <span class="shape-legend" id="shape-legend"></span>
+      <span class="graph-only-controls" id="graph-only-controls">
+        <span class="label">Visão</span>
+        <span class="chip toggle-on" data-view="content">Conteúdo → Tema</span>
+        <span class="chip" data-view="temas">Temas relacionados entre si</span>
+        <span class="chip" id="recent-toggle">Só últimos 14 dias</span>
+        <input class="search-input" id="search-input" type="text" placeholder="Buscar por título…">
+        <span class="shape-legend" id="shape-legend"></span>
+      </span>
       <span class="auth-status" id="auth-status"></span>
       <button class="import-btn" id="import-open-btn" type="button">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>
@@ -742,7 +745,7 @@
       <div class="hm-scroll"><svg id="trend-svg"></svg></div>
     </div>
 
-    <div class="heatmap-card">
+    <div class="heatmap-card" id="section-palavras">
       <h2>Palavras mais usadas nos títulos</h2>
       <p class="hm-sub">As 20 palavras que mais aparecem nos 120 títulos do catálogo, sem contar palavras comuns.</p>
       <div class="word-tags" id="word-tags"></div>
@@ -1909,23 +1912,75 @@
   renderAuthStatus();
   checkAuthStatus();
 
-  // ---------------- sidebar: scrollspy ----------------
+  // ---------------- sidebar: fake multi-page switching ----------------
   (function () {
     var navLinks = Array.prototype.slice.call(document.querySelectorAll("#sidebar-nav a"));
-    if (!navLinks.length || !("IntersectionObserver" in window)) return;
-    var targets = navLinks.map(function (a) {
-      return document.getElementById(a.getAttribute("href").slice(1));
+    if (!navLinks.length) return;
+
+    var PAGE_SECTIONS = {
+      "section-graph": ["section-graph"],
+      "section-cobertura": ["section-cobertura"],
+      "section-oportunidades": ["section-oportunidades"],
+      "section-calendario": ["section-calendario"],
+      "section-ritmo": ["section-ritmo", "section-palavras"],
+      "section-tabela": ["section-tabela"]
+    };
+    var ALL_IDS = [];
+    Object.keys(PAGE_SECTIONS).forEach(function (k) {
+      PAGE_SECTIONS[k].forEach(function (id) { ALL_IDS.push(id); });
     });
-    function setActive(id) {
-      navLinks.forEach(function (a) {
-        a.classList.toggle("active", a.getAttribute("href") === "#" + id);
-      });
+    var graphOnlyEls = [
+      document.getElementById("graph-only-controls"),
+      document.getElementById("toolbar"),
+      document.getElementById("toolbar-format")
+    ];
+
+    function isDesktopNav() {
+      return window.matchMedia("(min-width: 901px)").matches;
     }
-    var observer = new IntersectionObserver(function (entries) {
-      var visible = entries.filter(function (e) { return e.isIntersecting; });
-      if (visible.length) setActive(visible[0].target.id);
-    }, { rootMargin: "-10% 0px -70% 0px", threshold: 0 });
-    targets.forEach(function (el) { if (el) observer.observe(el); });
+
+    function showPage(pageId) {
+      if (!PAGE_SECTIONS[pageId]) pageId = "section-graph";
+      if (!isDesktopNav()) {
+        // Mobile: sidebar nav is hidden, so keep the old scrolling behavior —
+        // everything stays visible and reachable by scrolling.
+        ALL_IDS.forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.style.display = "";
+        });
+        graphOnlyEls.forEach(function (el) { if (el) el.style.display = ""; });
+        return;
+      }
+      ALL_IDS.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = "none";
+      });
+      PAGE_SECTIONS[pageId].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = "";
+      });
+      var onGraphPage = pageId === "section-graph";
+      graphOnlyEls.forEach(function (el) { if (el) el.style.display = onGraphPage ? "" : "none"; });
+      navLinks.forEach(function (a) {
+        a.classList.toggle("active", a.getAttribute("href") === "#" + pageId);
+      });
+      window.scrollTo(0, 0);
+      history.replaceState(null, "", "#" + pageId);
+    }
+
+    navLinks.forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        if (!isDesktopNav()) return; // let it scroll normally on mobile
+        e.preventDefault();
+        showPage(a.getAttribute("href").slice(1));
+      });
+    });
+
+    window.matchMedia("(min-width: 901px)").addEventListener("change", function () {
+      showPage((location.hash || "#section-graph").slice(1));
+    });
+
+    showPage((location.hash || "#section-graph").slice(1));
   })();
 
   // ---------------- importar conteúdo (.md / .zip de .md) ----------------
