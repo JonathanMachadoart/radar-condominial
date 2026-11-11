@@ -560,8 +560,10 @@
   .import-login-form { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
   .import-login-input {
     font: inherit; font-size: 13px; padding: 7px 10px; border-radius: 8px;
-    border: 1px solid var(--border); background: var(--bg-elevated, #fff); color: var(--text-primary); min-width: 120px;
+    border: 1px solid var(--border); background: var(--surface-1); color: var(--text-primary); min-width: 120px;
   }
+  .import-login-input::placeholder { color: var(--text-muted); opacity: 1; }
+  .import-login-input:focus { outline: none; border-color: var(--accent-active); box-shadow: 0 0 0 2px var(--accent-soft); }
   .import-login-submit {
     appearance: none; border: none; cursor: pointer; font: inherit; font-weight: 700; font-size: 13px;
     color: #fff; background: var(--accent-active); border-radius: 999px; padding: 7px 16px;
