@@ -129,6 +129,16 @@ async function handleLogout(request, env) {
   return json({ ok: true }, { headers: { "Set-Cookie": clearSessionCookieHeader() } });
 }
 
+// Lets the page ask "am I logged in?" on load, without the session cookie
+// ever being readable by its own JS (it's HttpOnly) — the Worker is the
+// only thing that can verify it.
+async function handleMe(request, env) {
+  if (request.method === "OPTIONS") return new Response(null, { headers: CORS_HEADERS });
+  const token = getCookie(request, SESSION_COOKIE);
+  const username = await verifySessionToken(env, token);
+  return json({ username: username || null });
+}
+
 // Protected by a real username + password login (see handleLogin above).
 // The password itself is never stored by this code — it only ever lives as
 // a Cloudflare Worker secret (set via `wrangler secret put`), which
@@ -191,6 +201,7 @@ export default {
     if (url.pathname === "/api/imports") return handlePublicImports(request, env);
     if (url.pathname === "/api/login") return handleLogin(request, env);
     if (url.pathname === "/api/logout") return handleLogout(request, env);
+    if (url.pathname === "/api/me") return handleMe(request, env);
     if (url.pathname === "/api/admin/imports") return handleAdminImports(request, env);
 
     // Everything else is the static site (index.html and friends).

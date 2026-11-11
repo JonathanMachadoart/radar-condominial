@@ -192,6 +192,33 @@ async function run() {
     check("non-API route -> static html returned", text.includes("static site placeholder"), text.slice(0, 50));
   }
 
+  // 13. /api/me with no session -> { username: null }
+  {
+    const req = new Request("https://example.com/api/me", { method: "GET" });
+    const res = await worker.fetch(req, env, {});
+    const body = await res.json();
+    check("/api/me no session -> username null", body.username === null, JSON.stringify(body));
+  }
+
+  // 14. /api/me WITH a fresh valid session -> { username: "jonathan" }
+  {
+    const loginReq = new Request("https://example.com/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: "jonathan", password: "correct-horse-battery-staple" }),
+    });
+    const loginRes = await worker.fetch(loginReq, env, {});
+    const cookie = extractSessionCookie(loginRes);
+
+    const meReq = new Request("https://example.com/api/me", {
+      method: "GET",
+      headers: { Cookie: `radar_session=${cookie}` },
+    });
+    const meRes = await worker.fetch(meReq, env, {});
+    const meBody = await meRes.json();
+    check("/api/me with valid session -> returns username", meBody.username === "jonathan", JSON.stringify(meBody));
+  }
+
   console.log(`\n${passed} passed, ${failed} failed`);
   if (failed > 0) process.exit(1);
 }

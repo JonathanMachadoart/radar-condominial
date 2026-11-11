@@ -17,11 +17,14 @@ cf-worker/
 
 ## O que mudou em relação à versão estática
 
-- O botão **Importar conteúdo** agora abre um formulário de **usuário e senha de verdade** (campo de senha mascarado, não uma caixinha simples do navegador) quando você ainda não entrou. Ao confirmar, o Worker verifica as credenciais e, se baterem, define um cookie de sessão (`HttpOnly`, só o navegador consegue usar, nenhum código da página consegue ler ou guardar o valor dele). As próximas importações, enquanto a sessão durar (7 dias), não pedem login de novo.
+- Assim que a página carrega, a barra de ferramentas mostra um botão **Entrar** (perto do botão de importar). Clicar nele abre um formulário de **usuário e senha de verdade** (campo de senha mascarado, não uma caixinha simples do navegador). Depois de logado, aparece "Logado como `<usuário>`" com uma opção de **Sair**, e importar conteúdo dali em diante não interrompe mais pedindo login — a sessão dura 7 dias.
+- Se você for direto pro botão **Importar conteúdo** sem logar antes, ele pede login no meio do processo (igual antes), e retoma a importação sozinho assim que você entra.
 - A senha nunca é guardada pelo código do site — ela só existe como segredo do Worker (`wrangler secret put`), que a Cloudflare guarda criptografado e nem você nem eu conseguimos ver de novo depois de configurado, só trocar.
-- Ao abrir a página, ela faz um `GET` em `/api/imports` (sem precisar de login) e mescla os itens já salvos com os dados originais, **antes** de desenhar o grafo — então qualquer visitante já vê tudo que foi importado antes, não só quem importou. Só salvar/remover é que exige estar logado.
+- Ao abrir a página, ela faz um `GET` em `/api/imports` (sem precisar de login) e mescla os itens já salvos com os dados originais, **antes** de desenhar o grafo — então qualquer visitante já vê tudo que foi importado antes, não só quem importou, e **não precisa logar só para ver o site**. Só salvar/remover é que exige estar logado.
 
 > **Se você já tinha publicado a versão anterior** (com a senha única via `IMPORT_SECRET`): essa versão nova troca completamente esse mecanismo por usuário+senha. Siga o passo 4 abaixo para configurar as novas credenciais antes de publicar de novo — o `IMPORT_SECRET` antigo fica sem uso (pode deixar ou remover com `npx wrangler secret delete IMPORT_SECRET`, tanto faz).
+>
+> **Se você já tinha publicado a versão com usuário+senha** (sem o botão "Entrar" na barra de ferramentas) e só quer a versão mais nova com login logo ao entrar no site: os três segredos (`ADMIN_USERNAME`, `ADMIN_PASSWORD`, `SESSION_SECRET`) continuam os mesmos, nada muda neles — é só pular direto pro passo 5 (`npx wrangler deploy`) com os arquivos novos.
 
 ## Passo a passo para publicar
 
@@ -102,12 +105,12 @@ Se tudo correr bem, ele confirma a URL publicada — deve ser a mesma `radarcond
 
 ### 6. Testar
 
-1. Abra o site publicado.
-2. Clique em **Importar conteúdo**, suba um `.md` ou `.zip`, revise e confirme.
-3. Vai aparecer um formulário pedindo usuário e senha — digite os que você definiu no passo 4 e clique em **Entrar**. A importação continua automaticamente depois do login, sem precisar clicar em confirmar de novo.
-4. Recarregue a página (F5) — o item importado deve continuar aparecendo. Esse é o sinal de que a persistência real está funcionando (na versão estática antiga, ele desaparecia ao recarregar).
-5. Abra o site em outro navegador ou aba anônima — o item importado deve aparecer também lá (sem precisar logar, já que ver o conteúdo é público), confirmando que está salvo no servidor, não só no seu navegador.
-6. Se quiser confirmar que a sessão realmente dura, importe um segundo item mais tarde — não deve pedir login de novo, a menos que tenham se passado 7 dias ou você tenha saído (`POST /api/logout`, sem botão na interface ainda).
+1. Abra o site publicado (dê um Ctrl+Shift+R pra garantir que não está vendo uma versão em cache).
+2. Na barra de ferramentas, clique em **Entrar** e faça login com o usuário/senha do passo 4. Deve trocar para "Logado como `<usuário>` · Sair".
+3. Clique em **Importar conteúdo**, suba um `.md` ou `.zip`, revise e confirme — como você já está logado, deve salvar direto, sem pedir login de novo.
+4. Recarregue a página (F5) — o item importado deve continuar aparecendo, e o botão de login deve voltar a mostrar "Entrar" (a sessão não é "lembrada" entre recargas de página nesse sentido — ela é um cookie, então continua logada; o que reseta é só o estado inicial sendo checado de novo via `/api/me`, que deve te manter logado automaticamente). Esse é o sinal de que a persistência real está funcionando (na versão estática antiga, ele desaparecia ao recarregar).
+5. Abra o site em outro navegador ou aba anônima — o item importado deve aparecer também lá (sem precisar logar, já que ver o conteúdo é público), e o botão deve mostrar "Entrar" (sessão de login não é compartilhada entre navegadores/dispositivos, como esperado), confirmando que o conteúdo está salvo no servidor, não só no seu navegador.
+6. Pra sair, clique em **Sair** na barra de ferramentas.
 
 ## Testes automatizados incluídos
 
@@ -117,9 +120,9 @@ Este ambiente de desenvolvimento não teve acesso de rede para rodar `wrangler d
 node test_worker_logic.mjs
 ```
 
-Os 19 casos cobrem: `GET` público sem login, `POST` administrativo sem sessão (401), login com senha errada (401, sem cookie), login com usuário errado (401), login correto (200, cookie de sessão com `HttpOnly`+`Secure`), `POST` com sessão válida (salva e marca quem importou), persistência entre chamadas (simula reload), `DELETE` com sessão válida, cookie de sessão adulterado (401 — a assinatura não bate), sessão expirada/malformada (401), logout (limpa o cookie), rota estática (cai para `ASSETS.fetch`).
+Os 21 casos cobrem: `GET` público sem login, `POST` administrativo sem sessão (401), login com senha errada (401, sem cookie), login com usuário errado (401), login correto (200, cookie de sessão com `HttpOnly`+`Secure`), `POST` com sessão válida (salva e marca quem importou), persistência entre chamadas (simula reload), `DELETE` com sessão válida, cookie de sessão adulterado (401 — a assinatura não bate), sessão expirada/malformada (401), logout (limpa o cookie), `GET /api/me` sem e com sessão válida, rota estática (cai para `ASSETS.fetch`).
 
-Separadamente, o fluxo completo da página (`index.html` real, servido por HTTP local, com as chamadas de rede interceptadas e respondendo como o Worker responde) foi validado ponta a ponta: sem estar logado aparece o formulário de usuário/senha; credenciais erradas mostram aviso e não salvam nada; credenciais certas logam e a importação é refeita automaticamente, salvando de verdade; e um carregamento novo da página, mesmo sem login nenhum, já vem com o item importado antes — confirmando que ver o conteúdo continua público, só salvar exige login.
+Separadamente, o fluxo completo da página (`index.html` real, servido por HTTP local, com as chamadas de rede interceptadas e respondendo como o Worker responde) foi validado ponta a ponta: a barra de ferramentas mostra "Entrar" quando não logado; logar pelo botão do topo funciona (credenciais erradas mostram aviso, certas logam e trocam o botão por "Logado como ... · Sair"); depois de logado assim, importar não interrompe mais pedindo login; sair pelo botão "Sair" volta ao estado "Entrar"; e um carregamento novo da página, mesmo sem login nenhum, já vem com o item importado antes — confirmando que ver o conteúdo continua público, só salvar exige login.
 
 ## Removendo um item importado (se precisar)
 

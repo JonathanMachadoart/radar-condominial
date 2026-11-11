@@ -247,7 +247,17 @@
     overflow: hidden;
     position: relative;
   }
-  #graph-svg { display: block; width: 100%; height: 640px; touch-action: none; }
+  #graph-svg { display: block; width: 100%; height: 640px; touch-action: none; cursor: grab; }
+  #graph-svg:active { cursor: grabbing; }
+  .zoom-controls { position: absolute; right: 14px; bottom: 14px; display: flex; flex-direction: column; gap: 6px; z-index: 5; }
+  .zoom-btn {
+    appearance: none; border: 1px solid var(--border); background: var(--chip-bg);
+    color: var(--text-secondary); width: 30px; height: 30px; border-radius: 8px; cursor: pointer;
+    font-size: 16px; font-weight: 700; line-height: 1; display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--shadow-card);
+  }
+  .zoom-btn:hover { background: var(--accent-soft); color: var(--accent-active); border-color: var(--accent-active); }
+  .zoom-reset-btn { font-size: 13px; }
   .node-content { cursor: pointer; }
   .node-tema { cursor: pointer; }
   .link {
@@ -424,6 +434,27 @@
     text-align: center;
   }
 
+  .cal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+  .cal-day {
+    border: 1px solid var(--border); border-radius: 12px; padding: 12px;
+    background: var(--page); display: flex; flex-direction: column; gap: 6px;
+  }
+  .cal-day-name { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+  .cal-tema { font-size: 14px; font-weight: 700; color: var(--text-primary); line-height: 1.25; }
+  .cal-badge {
+    align-self: flex-start; font-size: 10.5px; font-weight: 600; padding: 3px 9px; border-radius: 999px; line-height: 1.4;
+  }
+  .cal-badge-trend { background: var(--accent-soft); color: var(--accent-active); border: 1px solid var(--accent-active); }
+  .cal-badge-gap { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
+  .cal-format { font-size: 12px; color: var(--text-secondary); }
+  .cal-refs { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
+  .cal-ref {
+    font-size: 11px; color: var(--text-muted); text-decoration: none; overflow: hidden;
+    text-overflow: ellipsis; white-space: nowrap;
+  }
+  .cal-ref:hover { color: var(--accent-active); text-decoration: underline; }
+  .cal-empty { font-size: 12px; color: var(--text-muted); }
+
   .gap-groups { display: flex; flex-direction: column; gap: 10px; }
   .gap-brand-row { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
   .gap-brand-name { flex: none; width: 84px; font-size: 12px; font-weight: 700; color: var(--text-primary); padding-top: 4px; }
@@ -536,6 +567,19 @@
     color: #fff; background: var(--accent-active); border-radius: 999px; padding: 7px 16px;
   }
   .import-login-submit:disabled { opacity: .55; cursor: default; }
+  .login-body { display: flex; flex-direction: column; gap: 8px; padding: 18px 24px 24px; }
+  .login-body .import-login-input { width: 100%; box-sizing: border-box; }
+  .login-body .import-login-submit { align-self: flex-start; }
+  .auth-status { font-size: 12px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 6px; }
+  .auth-enter-btn {
+    appearance: none; border: 1px solid var(--accent-active); cursor: pointer; font: inherit; font-weight: 700;
+    font-size: 12px; color: var(--accent-active); background: var(--accent-soft); border-radius: 999px; padding: 6px 14px;
+  }
+  .auth-enter-btn:hover { filter: brightness(1.1); }
+  .auth-logout-btn {
+    appearance: none; border: none; cursor: pointer; font: inherit; font-weight: 600; font-size: 12px;
+    color: var(--text-muted); background: transparent; text-decoration: underline; padding: 0;
+  }
   .import-confirm-btn {
     appearance: none; border: none; cursor: pointer; font: inherit; font-weight: 700; font-size: 13px;
     color: #fff; background: var(--accent-active); border-radius: 999px; padding: 9px 20px;
@@ -566,6 +610,7 @@
       <span class="chip" id="recent-toggle">Só últimos 14 dias</span>
       <input class="search-input" id="search-input" type="text" placeholder="Buscar por título…">
       <span class="shape-legend" id="shape-legend"></span>
+      <span class="auth-status" id="auth-status"></span>
       <button class="import-btn" id="import-open-btn" type="button">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>
         Importar conteúdo
@@ -586,6 +631,11 @@
     <div class="layout">
       <div class="chart-card">
         <svg id="graph-svg"></svg>
+        <div class="zoom-controls" id="zoom-controls">
+          <button type="button" class="zoom-btn" id="zoom-in-btn" title="Aumentar zoom">+</button>
+          <button type="button" class="zoom-btn" id="zoom-out-btn" title="Diminuir zoom">&minus;</button>
+          <button type="button" class="zoom-btn zoom-reset-btn" id="zoom-reset-btn" title="Restaurar zoom">&#8634;</button>
+        </div>
         <div class="tooltip" id="tooltip"></div>
       </div>
 
@@ -612,6 +662,12 @@
       <h2>Oportunidades por marca</h2>
       <p class="hm-sub">Temas mais populares do catálogo (por volume total de conteúdo) que cada marca ainda não cobriu nenhuma vez.</p>
       <div class="gap-groups" id="gap-groups"></div>
+    </div>
+
+    <div class="heatmap-card">
+      <h2>Calendário de conteúdo sugerido (semana)</h2>
+      <p class="hm-sub">Uma pauta por dia útil, calculada a partir do que os concorrentes estão publicando: dias "Em alta" seguem temas com bastante atividade recente no mercado; dias "Oportunidade" miram temas relevantes que ninguém postou nos últimos 30 dias — espaço livre pra ocupar primeiro.</p>
+      <div class="cal-grid" id="calendar-days"></div>
     </div>
 
     <div class="heatmap-card">
@@ -653,6 +709,21 @@
           <button class="import-cancel-btn" id="import-cancel-btn" type="button">Cancelar</button>
           <button class="import-confirm-btn" id="import-confirm-btn" type="button">Importar selecionados</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="import-backdrop" id="login-backdrop" hidden>
+    <div class="import-modal login-modal" role="dialog" aria-modal="true" aria-label="Entrar">
+      <div class="import-head">
+        <h2>Entrar</h2>
+        <button class="import-close" id="login-close-btn" type="button" aria-label="Fechar">×</button>
+      </div>
+      <div class="login-body">
+        <input type="text" id="login-user-input" class="import-login-input" placeholder="Usuário" autocomplete="username">
+        <input type="password" id="login-pass-input" class="import-login-input" placeholder="Senha" autocomplete="current-password">
+        <div class="import-login-msg" id="login-msg"></div>
+        <button type="button" id="login-submit-btn" class="import-login-submit">Entrar</button>
       </div>
     </div>
   </div>
@@ -815,6 +886,7 @@
   var FORMAT_SIZE_MULT = { video: 1, short: 1.15, reel: 1, podcast: 1.35, post: 1.2 };
 
   var svg = d3.select("#graph-svg");
+  var gZoom = svg.append("g").attr("class", "zoom-layer");
   var gLinks, gNodes, gLabels;
   var width, height;
   function measure() {
@@ -822,6 +894,41 @@
     width = box.width; height = box.height || 640;
   }
   measure();
+
+  var currentZoomK = 1;
+  var currentNodeSel = null, currentLabelSel = null, currentLinkSel = null;
+  var BASE_LABEL_FONT = 11, BASE_LABEL_STROKE = 3;
+  function nodeTransform(d) { return "translate(" + d.x + "," + d.y + ") scale(" + (1 / currentZoomK) + ")"; }
+  function applyLabelScale(sel) {
+    if (!sel) return;
+    sel.style("font-size", (BASE_LABEL_FONT / currentZoomK) + "px")
+       .style("stroke-width", (BASE_LABEL_STROKE / currentZoomK) + "px");
+  }
+  function applyLinkScale(sel) {
+    if (!sel) return;
+    sel.attr("stroke-width", function (d) { return (d.__sw || 1) / currentZoomK; });
+  }
+  var zoomBehavior = d3.zoom()
+    .scaleExtent([0.35, 6])
+    .on("zoom", function (event) {
+      gZoom.attr("transform", event.transform);
+      currentZoomK = event.transform.k;
+      // Keep icons, labels and link thickness at a constant on-screen size while
+      // zoom changes spacing/position — only the layout "spreads out", not the ink.
+      if (currentNodeSel) currentNodeSel.attr("transform", nodeTransform);
+      applyLabelScale(currentLabelSel);
+      applyLinkScale(currentLinkSel);
+    });
+  svg.call(zoomBehavior);
+  document.getElementById("zoom-in-btn").addEventListener("click", function () {
+    svg.transition().duration(200).call(zoomBehavior.scaleBy, 1.4);
+  });
+  document.getElementById("zoom-out-btn").addEventListener("click", function () {
+    svg.transition().duration(200).call(zoomBehavior.scaleBy, 1 / 1.4);
+  });
+  document.getElementById("zoom-reset-btn").addEventListener("click", function () {
+    svg.transition().duration(250).call(zoomBehavior.transform, d3.zoomIdentity);
+  });
 
   var tooltip = d3.select("#tooltip");
   var chartCard = document.querySelector(".chart-card");
@@ -874,7 +981,7 @@
       .data(links)
       .join("line")
       .attr("class", "link")
-      .attr("stroke-width", 1);
+      .attr("stroke-width", function (d) { d.__sw = 1; return d.__sw / currentZoomK; });
 
     var nodeSel = gNodes.selectAll("g.node")
       .data(nodes, function (d) { return d.id; })
@@ -911,6 +1018,9 @@
       .attr("text-anchor", "middle")
       .attr("dy", 3)
       .text(function (d) { return d.title; });
+    applyLabelScale(labelSel);
+
+    currentNodeSel = nodeSel; currentLabelSel = labelSel; currentLinkSel = linkSel;
 
     nodeSel.on("mousemove", function (event, d) {
       var html;
@@ -941,11 +1051,11 @@
     }
 
     simulation = d3.forceSimulation(nodes)
-      .force("link", d3.forceLink(links).id(function (d) { return d.id; }).distance(62).strength(0.55))
-      .force("charge", d3.forceManyBody().strength(function (d) { return d.type === "tema" ? -260 : -55; }))
+      .force("link", d3.forceLink(links).id(function (d) { return d.id; }).distance(78).strength(0.5))
+      .force("charge", d3.forceManyBody().strength(function (d) { return d.type === "tema" ? -340 : -95; }))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide().radius(function (d) {
-        return (d.type === "tema" ? temaRadius(d.count) : contentRadius(d.degree)) + 3;
+        return (d.type === "tema" ? temaRadius(d.count) : contentRadius(d.degree)) + 6;
       }))
       .force("x", d3.forceX(width / 2).strength(0.03))
       .force("y", d3.forceY(height / 2).strength(0.03))
@@ -956,7 +1066,7 @@
           .attr("y1", function (d) { return d.source.y; })
           .attr("x2", function (d) { return d.target.x; })
           .attr("y2", function (d) { return d.target.y; });
-        nodeSel.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+        nodeSel.attr("transform", nodeTransform);
         labelSel
           .attr("x", function (d) { return nodeById[d.id].x; })
           .attr("y", function (d) { return nodeById[d.id].y; });
@@ -970,7 +1080,8 @@
       function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
       function ended(event, d) {
         if (!event.active) simulation.alphaTarget(0);
-        d.fx = null; d.fy = null;
+        // Keep the node pinned exactly where it was dropped, instead of releasing
+        // it back to the simulation (which would pull it back toward its old spot).
       }
       return d3.drag().on("start", started).on("drag", dragged).on("end", ended);
     }
@@ -1014,7 +1125,7 @@
       .data(links)
       .join("line")
       .attr("class", "link")
-      .attr("stroke-width", function (d) { return widthScale(d.weight); });
+      .attr("stroke-width", function (d) { d.__sw = widthScale(d.weight); return d.__sw / currentZoomK; });
 
     var nodeSel = gNodes.selectAll("g.node")
       .data(nodes, function (d) { return d.id; })
@@ -1037,6 +1148,9 @@
       .attr("text-anchor", "middle")
       .attr("dy", 3)
       .text(function (d) { return d.title; });
+    applyLabelScale(labelSel);
+
+    currentNodeSel = nodeSel; currentLabelSel = labelSel; currentLinkSel = linkSel;
 
     nodeSel.on("mousemove", function (event, d) {
       var related = links.filter(function (l) { return l.source.id === d.id || l.target.id === d.id || l.source === d.id || l.target === d.id; })
@@ -1058,9 +1172,9 @@
 
     simulation = d3.forceSimulation(nodes)
       .force("link", d3.forceLink(links).id(function (d) { return d.id; }).distance(function (l) { return 130 - Math.min(70, l.weight * 8); }).strength(0.5))
-      .force("charge", d3.forceManyBody().strength(-320))
+      .force("charge", d3.forceManyBody().strength(-420))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collide", d3.forceCollide().radius(function (d) { return temaRadius(d.count) + 6; }))
+      .force("collide", d3.forceCollide().radius(function (d) { return temaRadius(d.count) + 10; }))
       .force("x", d3.forceX(width / 2).strength(0.04))
       .force("y", d3.forceY(height / 2).strength(0.04))
       .on("tick", function () {
@@ -1070,7 +1184,7 @@
           .attr("y1", function (d) { return d.source.y; })
           .attr("x2", function (d) { return d.target.x; })
           .attr("y2", function (d) { return d.target.y; });
-        nodeSel.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+        nodeSel.attr("transform", nodeTransform);
         labelSel
           .attr("x", function (d) { return nodeById[d.id].x; })
           .attr("y", function (d) { return nodeById[d.id].y; });
@@ -1084,7 +1198,8 @@
       function dragged(event, d) { d.fx = event.x; d.fy = event.y; }
       function ended(event, d) {
         if (!event.active) simulation.alphaTarget(0);
-        d.fx = null; d.fy = null;
+        // Keep the node pinned exactly where it was dropped, instead of releasing
+        // it back to the simulation (which would pull it back toward its old spot).
       }
       return d3.drag().on("start", started).on("drag", dragged).on("end", ended);
     }
@@ -1092,10 +1207,10 @@
 
   function clearSvg() {
     if (simulation) { simulation.stop(); simulation = null; }
-    svg.selectAll("*").remove();
-    gLinks = svg.append("g").attr("class", "links");
-    gNodes = svg.append("g").attr("class", "nodes");
-    gLabels = svg.append("g").attr("class", "labels");
+    gZoom.selectAll("*").remove();
+    gLinks = gZoom.append("g").attr("class", "links");
+    gNodes = gZoom.append("g").attr("class", "nodes");
+    gLabels = gZoom.append("g").attr("class", "labels");
   }
 
   function renderMode() {
@@ -1356,6 +1471,129 @@
   }
   renderGaps();
 
+  // ---------------- calendário de conteúdo sugerido ----------------
+  function renderCalendar() {
+    var el = document.getElementById("calendar-days");
+    if (!el) return;
+    el.innerHTML = "";
+
+    var RECENT_WINDOW_DAYS = 30;
+    var now = new Date();
+    var cutoff = new Date(now.getTime() - RECENT_WINDOW_DAYS * 24 * 60 * 60 * 1000);
+
+    var recentCount = {};   // tema title -> # posts (qualquer marca) nos últimos 30 dias
+    var itemsByTema = {};   // tema title -> lista de conteúdos que citam esse tema
+    DATA.temas.forEach(function (t) { recentCount[t.title] = 0; itemsByTema[t.title] = []; });
+
+    DATA.content.forEach(function (c) {
+      var d = new Date(c.data);
+      var isRecent = !isNaN(d) && d >= cutoff;
+      (c.temas || []).forEach(function (temaTitle) {
+        if (!itemsByTema[temaTitle]) itemsByTema[temaTitle] = [];
+        itemsByTema[temaTitle].push(c);
+        if (isRecent) recentCount[temaTitle] = (recentCount[temaTitle] || 0) + 1;
+      });
+    });
+
+    var candidates = DATA.temas.map(function (t) {
+      return { title: t.title, total: t.count, recent: recentCount[t.title] || 0 };
+    });
+
+    // "Em alta": temas com bastante atividade de concorrentes nos últimos 30 dias.
+    var trending = candidates.filter(function (c) { return c.recent >= 2; })
+      .sort(function (a, b) { return b.recent - a.recent || b.total - a.total; });
+
+    // "Oportunidade": temas relevantes no catálogo (>=5 conteúdos no total) mas sem
+    // nenhum post de ninguém nos últimos 30 dias — ninguém está "dono" do tema agora.
+    var gaps = candidates.filter(function (c) { return c.total >= 5 && c.recent === 0; })
+      .sort(function (a, b) { return b.total - a.total; });
+
+    var DAYS = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
+    var used = {};
+    var ti = 0, gi = 0;
+    function nextTrend() {
+      while (ti < trending.length && used[trending[ti].title]) ti++;
+      if (ti >= trending.length) return null;
+      used[trending[ti].title] = true;
+      return trending[ti++];
+    }
+    function nextGap() {
+      while (gi < gaps.length && used[gaps[gi].title]) gi++;
+      if (gi >= gaps.length) return null;
+      used[gaps[gi].title] = true;
+      return gaps[gi++];
+    }
+
+    var picks = DAYS.map(function (_, i) {
+      var preferTrend = i % 2 === 0;
+      var tema = preferTrend ? (nextTrend() || nextGap()) : (nextGap() || nextTrend());
+      if (!tema) return null;
+      return { tema: tema, kind: trending.indexOf(tema) !== -1 && (tema.recent >= 2) ? "trend" : "gap" };
+    });
+
+    picks.forEach(function (pick, i) {
+      var card = document.createElement("div");
+      card.className = "cal-day";
+      if (!pick) {
+        card.innerHTML = '<div class="cal-day-name">' + DAYS[i] + '</div><div class="cal-empty">Sem sugestão clara com os dados atuais.</div>';
+        el.appendChild(card);
+        return;
+      }
+      var tema = pick.tema;
+      var items = itemsByTema[tema.title] || [];
+
+      var formatCounts = {};
+      items.forEach(function (it) { formatCounts[it.formato] = (formatCounts[it.formato] || 0) + 1; });
+      var bestFormat = Object.keys(formatCounts).sort(function (a, b) { return formatCounts[b] - formatCounts[a]; })[0];
+
+      var refs = items.slice().sort(function (a, b) { return new Date(b.data) - new Date(a.data); }).slice(0, 2);
+
+      var badgeClass = pick.kind === "trend" ? "cal-badge-trend" : "cal-badge-gap";
+      var badgeText = pick.kind === "trend"
+        ? ("Em alta · " + tema.recent + " post" + (tema.recent === 1 ? "" : "s") + " de concorrentes nos últimos 30 dias")
+        : ("Oportunidade · tema relevante (" + tema.total + " conteúdos no catálogo), sem post recente");
+
+      var dayName = document.createElement("div");
+      dayName.className = "cal-day-name";
+      dayName.textContent = DAYS[i];
+      card.appendChild(dayName);
+
+      var temaEl = document.createElement("div");
+      temaEl.className = "cal-tema";
+      temaEl.textContent = tema.title;
+      card.appendChild(temaEl);
+
+      var badge = document.createElement("div");
+      badge.className = "cal-badge " + badgeClass;
+      badge.textContent = badgeText;
+      card.appendChild(badge);
+
+      if (bestFormat) {
+        var fmt = document.createElement("div");
+        fmt.className = "cal-format";
+        fmt.textContent = "Formato sugerido: " + (FORMAT_LABEL[bestFormat] || bestFormat);
+        card.appendChild(fmt);
+      }
+
+      if (refs.length) {
+        var refsWrap = document.createElement("div");
+        refsWrap.className = "cal-refs";
+        refs.forEach(function (r) {
+          var a = document.createElement("a");
+          a.className = "cal-ref";
+          a.href = r.link; a.target = "_blank"; a.rel = "noopener";
+          a.title = r.marca + ": " + r.title;
+          a.textContent = r.marca + ": " + r.title;
+          refsWrap.appendChild(a);
+        });
+        card.appendChild(refsWrap);
+      }
+
+      el.appendChild(card);
+    });
+  }
+  renderCalendar();
+
   // ---------------- ritmo de publicação por mês ----------------
   function renderTrend() {
     var legendEl = document.getElementById("trend-legend");
@@ -1489,12 +1727,112 @@
     renderCadence();
     renderHeatmap();
     renderGaps();
+    renderCalendar();
     renderTrend();
     renderWordTags();
     renderTableView();
     updateCatalogCounts();
     renderMode();
   }
+
+  // ---------------- login (usuário/senha) ----------------
+  // Kept outside the import module so the toolbar can offer a login up
+  // front — logging in here means importing later never interrupts asking
+  // for credentials, since the session cookie is already set.
+  var LOGIN_API = "/api/login";
+  var LOGOUT_API = "/api/logout";
+  var ME_API = "/api/me";
+  var AUTH_STATE = { username: null };
+
+  var authStatusEl = document.getElementById("auth-status");
+  var loginBackdrop = document.getElementById("login-backdrop");
+  var loginUserInput = document.getElementById("login-user-input");
+  var loginPassInput = document.getElementById("login-pass-input");
+  var loginMsg = document.getElementById("login-msg");
+  var loginSubmitBtn = document.getElementById("login-submit-btn");
+  var loginOnSuccess = null;
+
+  function renderAuthStatus() {
+    authStatusEl.innerHTML = "";
+    if (AUTH_STATE.username) {
+      var who = document.createElement("span");
+      who.textContent = "Logado como " + AUTH_STATE.username + " · ";
+      var logoutBtn = document.createElement("button");
+      logoutBtn.type = "button";
+      logoutBtn.className = "auth-logout-btn";
+      logoutBtn.textContent = "Sair";
+      logoutBtn.addEventListener("click", function () {
+        fetch(LOGOUT_API, { method: "POST", credentials: "include" }).then(function () {
+          AUTH_STATE.username = null;
+          renderAuthStatus();
+        });
+      });
+      authStatusEl.appendChild(who);
+      authStatusEl.appendChild(logoutBtn);
+    } else {
+      var enterBtn = document.createElement("button");
+      enterBtn.type = "button";
+      enterBtn.className = "auth-enter-btn";
+      enterBtn.textContent = "Entrar";
+      enterBtn.addEventListener("click", function () { openLoginModal(); });
+      authStatusEl.appendChild(enterBtn);
+    }
+  }
+
+  function checkAuthStatus() {
+    fetch(ME_API, { credentials: "include" }).then(function (res) { return res.json(); }).then(function (data) {
+      AUTH_STATE.username = data && data.username ? data.username : null;
+      renderAuthStatus();
+    }).catch(function () { /* worker not deployed yet / network error — stay logged out */ });
+  }
+
+  function openLoginModal(onSuccess) {
+    loginOnSuccess = onSuccess || null;
+    loginUserInput.value = "";
+    loginPassInput.value = "";
+    loginMsg.textContent = "";
+    loginBackdrop.hidden = false;
+    loginUserInput.focus();
+  }
+
+  function closeLoginModal() {
+    loginBackdrop.hidden = true;
+    loginOnSuccess = null;
+  }
+
+  function submitLogin() {
+    loginSubmitBtn.disabled = true;
+    loginSubmitBtn.textContent = "Entrando…";
+    fetch(LOGIN_API, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username: loginUserInput.value, password: loginPassInput.value })
+    }).then(function (res) {
+      if (!res.ok) throw new Error("invalid");
+      return res.json();
+    }).then(function () {
+      AUTH_STATE.username = loginUserInput.value;
+      renderAuthStatus();
+      var cb = loginOnSuccess;
+      closeLoginModal();
+      if (cb) cb();
+    }).catch(function () {
+      loginMsg.textContent = "Usuário ou senha incorretos. Tente de novo.";
+    }).then(function () {
+      loginSubmitBtn.disabled = false;
+      loginSubmitBtn.textContent = "Entrar";
+    });
+  }
+
+  loginSubmitBtn.addEventListener("click", submitLogin);
+  loginPassInput.addEventListener("keydown", function (e) { if (e.key === "Enter") submitLogin(); });
+  loginUserInput.addEventListener("keydown", function (e) { if (e.key === "Enter") loginPassInput.focus(); });
+  document.getElementById("login-close-btn").addEventListener("click", closeLoginModal);
+  loginBackdrop.addEventListener("click", function (e) { if (e.target === loginBackdrop) closeLoginModal(); });
+
+  renderAuthStatus();
+  checkAuthStatus();
 
   // ---------------- importar conteúdo (.md / .zip de .md) ----------------
   (function () {
@@ -1521,67 +1859,11 @@
     // checks the username/password against its own secrets and, if they
     // match, sets an HttpOnly session cookie — the browser sends it back
     // automatically on later requests, so the page itself never stores the
-    // password anywhere.
+    // password anywhere. The login UI itself (openLoginModal, etc.) is
+    // shared with the toolbar's "Entrar" button — see above, outside this
+    // module — so logging in there means importing here never interrupts
+    // asking for credentials again.
     var ADMIN_API = "/api/admin/imports";
-    var LOGIN_API = "/api/login";
-
-    function showLoginForm(message) {
-      footerNote.innerHTML = "";
-      if (message) {
-        var msg = document.createElement("div");
-        msg.className = "import-login-msg";
-        msg.textContent = message;
-        footerNote.appendChild(msg);
-      }
-      var form = document.createElement("div");
-      form.className = "import-login-form";
-
-      var userInput = document.createElement("input");
-      userInput.type = "text";
-      userInput.placeholder = "Usuário";
-      userInput.autocomplete = "username";
-      userInput.className = "import-login-input";
-
-      var passInput = document.createElement("input");
-      passInput.type = "password";
-      passInput.placeholder = "Senha";
-      passInput.autocomplete = "current-password";
-      passInput.className = "import-login-input";
-
-      var submitBtn = document.createElement("button");
-      submitBtn.type = "button";
-      submitBtn.className = "import-login-submit";
-      submitBtn.textContent = "Entrar";
-
-      form.appendChild(userInput);
-      form.appendChild(passInput);
-      form.appendChild(submitBtn);
-      footerNote.appendChild(form);
-      userInput.focus();
-
-      function doLogin() {
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Entrando…";
-        fetch(LOGIN_API, {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: userInput.value, password: passInput.value })
-        }).then(function (res) {
-          if (!res.ok) throw new Error("invalid-credentials");
-          return res.json();
-        }).then(function () {
-          // Logged in — re-run the import now that the session cookie is set.
-          confirmImport();
-        }).catch(function () {
-          showLoginForm("Usuário ou senha incorretos. Tente de novo.");
-        });
-      }
-
-      submitBtn.addEventListener("click", doLogin);
-      passInput.addEventListener("keydown", function (e) { if (e.key === "Enter") doLogin(); });
-      userInput.addEventListener("keydown", function (e) { if (e.key === "Enter") passInput.focus(); });
-    }
 
     function stripDiacritics(s) { return s.normalize("NFD").replace(/[̀-ͯ]/g, ""); }
     function normalizeText(s) { return stripDiacritics(String(s || "").toLowerCase()); }
@@ -1961,10 +2243,11 @@
       }).catch(function (e) {
         confirmBtn.disabled = false;
         if (e && e.message === "needs-login") {
-          // Don't apply the items locally yet — once the login form below
+          // Don't apply the items locally yet — once the shared login modal
           // succeeds, confirmImport() runs again and this time saves (and
           // applies) for real, so nothing ends up applied twice.
-          showLoginForm("Para salvar de verdade, entre com seu usuário e senha:");
+          footerNote.textContent = toImport.length + " item(ns) prontos — entre para salvar de verdade.";
+          openLoginModal(confirmImport);
         } else {
           // Can't log our way out of a network/server error — apply
           // locally so the work isn't lost, but warn it won't survive a
