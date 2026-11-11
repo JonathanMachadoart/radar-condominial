@@ -1954,6 +1954,8 @@
       renderDropzone();
       backdrop.hidden = false;
       footerEl.hidden = true;
+      var cbtn = document.getElementById("import-confirm-btn");
+      if (cbtn) cbtn.disabled = false;
     }
     function closeModal() { backdrop.hidden = true; }
 
@@ -2241,6 +2243,7 @@
         toImport.forEach(function (item) { DATA.content.push(item); });
         recomputeDerived(DATA);
         refreshAfterImport();
+        confirmBtn.disabled = false;
         closeModal();
       }).catch(function (e) {
         confirmBtn.disabled = false;
